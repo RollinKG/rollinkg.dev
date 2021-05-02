@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on RollinKG&#39;s Devlog</title>
-    <link>rollinkg.github.io/categories/</link>
+    <link>https://rollinkg.dev/categories/</link>
     <description>Recent content in Categories on RollinKG&#39;s Devlog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ko-kr</language>
-    <lastBuildDate>Tue, 08 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="rollinkg.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 08 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://rollinkg.dev/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Android</title>
-      <link>rollinkg.github.io/categories/android/</link>
+      <link>https://rollinkg.dev/categories/android/</link>
       <pubDate>Tue, 08 Sep 2020 00:00:00 +0000</pubDate>
       
-      <guid>rollinkg.github.io/categories/android/</guid>
+      <guid>https://rollinkg.dev/categories/android/</guid>
       <description></description>
     </item>
     

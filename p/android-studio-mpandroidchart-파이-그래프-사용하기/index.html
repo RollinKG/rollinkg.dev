@@ -3,16 +3,16 @@
     <head><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Android Studio / Kotlin'><title>Android Studio MPAndroidChart 파이 그래프 사용하기</title>
 
-<link rel='canonical' href='rollinkg.github.io/p/android-studio-mpandroidchart-%ED%8C%8C%EC%9D%B4-%EA%B7%B8%EB%9E%98%ED%94%84-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/'>
+<link rel='canonical' href='https://rollinkg.dev/p/android-studio-mpandroidchart-%ED%8C%8C%EC%9D%B4-%EA%B7%B8%EB%9E%98%ED%94%84-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/'>
 
-<link rel="stylesheet" href="/rollinkg.github.io/scss/style.min.css"><meta property='og:title' content='Android Studio MPAndroidChart 파이 그래프 사용하기'>
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='Android Studio MPAndroidChart 파이 그래프 사용하기'>
 <meta property='og:description' content='Android Studio / Kotlin'>
-<meta property='og:url' content='rollinkg.github.io/p/android-studio-mpandroidchart-%ED%8C%8C%EC%9D%B4-%EA%B7%B8%EB%9E%98%ED%94%84-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/'>
+<meta property='og:url' content='https://rollinkg.dev/p/android-studio-mpandroidchart-%ED%8C%8C%EC%9D%B4-%EA%B7%B8%EB%9E%98%ED%94%84-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/'>
 <meta property='og:site_name' content='RollinKG&#39;s Devlog'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='android' /><meta property='article:tag' content='kotlin' /><meta property='article:published_time' content='2020-07-21T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2020-07-21T00:00:00&#43;00:00'/><meta property='og:image' content='/rollinkg.github.io/p/android-studio-mpandroidchart-%ED%8C%8C%EC%9D%B4-%EA%B7%B8%EB%9E%98%ED%94%84-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/matt-le-SJSpo9hQf7s-unsplash.jpg' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='android' /><meta property='article:tag' content='kotlin' /><meta property='article:published_time' content='2020-07-21T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2020-07-21T00:00:00&#43;00:00'/><meta property='og:image' content='https://rollinkg.dev/p/android-studio-mpandroidchart-%ED%8C%8C%EC%9D%B4-%EA%B7%B8%EB%9E%98%ED%94%84-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/matt-le-SJSpo9hQf7s-unsplash.jpg' />
 <meta name="twitter:title" content="Android Studio MPAndroidChart 파이 그래프 사용하기">
 <meta name="twitter:description" content="Android Studio / Kotlin"><meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content='/rollinkg.github.io/p/android-studio-mpandroidchart-%ED%8C%8C%EC%9D%B4-%EA%B7%B8%EB%9E%98%ED%94%84-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/matt-le-SJSpo9hQf7s-unsplash.jpg' />
+    <meta name="twitter:image" content='https://rollinkg.dev/p/android-studio-mpandroidchart-%ED%8C%8C%EC%9D%B4-%EA%B7%B8%EB%9E%98%ED%94%84-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/matt-le-SJSpo9hQf7s-unsplash.jpg' />
     </head>
     <body class="">
     <script>
@@ -52,7 +52,7 @@
                     
                     
                         
-                        <img src="/rollinkg.github.io/img/profile_huce2dcc4fcfe67e6028e5b5acfcccf454_11052776_300x0_resize_box_2.png" width="300"
+                        <img src="/img/profile_huce2dcc4fcfe67e6028e5b5acfcccf454_11052776_300x0_resize_box_2.png" width="300"
                             height="300" class="site-logo" loading="lazy" alt="Avatar">
                     
                 
@@ -62,7 +62,7 @@
                 
             </figure>
         
-        <h1 class="site-name"><a href="rollinkg.github.io">RollinKG&#39;s Devlog</a></h1>
+        <h1 class="site-name"><a href="https://rollinkg.dev">RollinKG&#39;s Devlog</a></h1>
         <h2 class="site-description">벽타는 개발자 Android/Flutter</h2>
     </header>
 
@@ -72,7 +72,7 @@
         
 
         <li >
-            <a href='rollinkg.github.io/'>
+            <a href='/'>
                 
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -91,7 +91,7 @@
         
 
         <li >
-            <a href='rollinkg.github.io/about-rollinkg/'>
+            <a href='/about-rollinkg/'>
                 
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -109,7 +109,7 @@
         
 
         <li >
-            <a href='rollinkg.github.io/archives/'>
+            <a href='/archives/'>
                 
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -128,7 +128,7 @@
         
 
         <li >
-            <a href='rollinkg.github.io/search/'>
+            <a href='/search/'>
                 
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -170,7 +170,7 @@
 
             <main class="main full-width">
     <div id="article-toolbar">
-        <a href="rollinkg.github.io" class="back-home">
+        <a href="https://rollinkg.dev" class="back-home">
             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
   <polyline points="15 6 9 12 15 18" />
@@ -185,9 +185,9 @@
     <article class="has-image main-article">
     <header class="article-header">
         <div class="article-image">
-            <a href="rollinkg.github.io/p/android-studio-mpandroidchart-%ED%8C%8C%EC%9D%B4-%EA%B7%B8%EB%9E%98%ED%94%84-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/">
-                <img src="/rollinkg.github.io/p/android-studio-mpandroidchart-%ED%8C%8C%EC%9D%B4-%EA%B7%B8%EB%9E%98%ED%94%84-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/matt-le-SJSpo9hQf7s-unsplash_hu958d513eeefe5556a31d065479ecc5ac_14205_800x0_resize_q75_box.jpg"
-                        srcset="/rollinkg.github.io/p/android-studio-mpandroidchart-%ED%8C%8C%EC%9D%B4-%EA%B7%B8%EB%9E%98%ED%94%84-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/matt-le-SJSpo9hQf7s-unsplash_hu958d513eeefe5556a31d065479ecc5ac_14205_800x0_resize_q75_box.jpg 800w, /rollinkg.github.io/p/android-studio-mpandroidchart-%ED%8C%8C%EC%9D%B4-%EA%B7%B8%EB%9E%98%ED%94%84-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/matt-le-SJSpo9hQf7s-unsplash_hu958d513eeefe5556a31d065479ecc5ac_14205_1600x0_resize_q75_box.jpg 1600w"
+            <a href="/p/android-studio-mpandroidchart-%ED%8C%8C%EC%9D%B4-%EA%B7%B8%EB%9E%98%ED%94%84-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/">
+                <img src="/p/android-studio-mpandroidchart-%ED%8C%8C%EC%9D%B4-%EA%B7%B8%EB%9E%98%ED%94%84-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/matt-le-SJSpo9hQf7s-unsplash_hu958d513eeefe5556a31d065479ecc5ac_14205_800x0_resize_q75_box.jpg"
+                        srcset="/p/android-studio-mpandroidchart-%ED%8C%8C%EC%9D%B4-%EA%B7%B8%EB%9E%98%ED%94%84-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/matt-le-SJSpo9hQf7s-unsplash_hu958d513eeefe5556a31d065479ecc5ac_14205_800x0_resize_q75_box.jpg 800w, /p/android-studio-mpandroidchart-%ED%8C%8C%EC%9D%B4-%EA%B7%B8%EB%9E%98%ED%94%84-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/matt-le-SJSpo9hQf7s-unsplash_hu958d513eeefe5556a31d065479ecc5ac_14205_1600x0_resize_q75_box.jpg 1600w"
                         width="800" 
                         height="533" 
                         loading="lazy"
@@ -201,7 +201,7 @@
     
     <header class="article-category">
         
-            <a href="rollinkg.github.io/categories/android/" style="background-color: #3DDC84; color: #fff;">
+            <a href="/categories/android/" style="background-color: #3DDC84; color: #fff;">
                 Android
             </a>
         
@@ -209,7 +209,7 @@
     
 
     <h2 class="article-title">
-        <a href="rollinkg.github.io/p/android-studio-mpandroidchart-%ED%8C%8C%EC%9D%B4-%EA%B7%B8%EB%9E%98%ED%94%84-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/">Android Studio MPAndroidChart 파이 그래프 사용하기</a>
+        <a href="/p/android-studio-mpandroidchart-%ED%8C%8C%EC%9D%B4-%EA%B7%B8%EB%9E%98%ED%94%84-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/">Android Studio MPAndroidChart 파이 그래프 사용하기</a>
     </h2>
 
     
@@ -346,9 +346,9 @@
     
     <section class="article-tags">
         
-            <a href="rollinkg.github.io/tags/android/">android</a>
+            <a href="/tags/android/">android</a>
         
-            <a href="rollinkg.github.io/tags/kotlin/">kotlin</a>
+            <a href="/tags/kotlin/">kotlin</a>
         
     </section>
 
@@ -379,7 +379,7 @@
                 
                     
 <article class="">
-    <a href="rollinkg.github.io/p/android-livedata-%EC%95%8C%EC%95%84%EB%B3%B4%EA%B8%B0/">
+    <a href="/p/android-livedata-%EC%95%8C%EC%95%84%EB%B3%B4%EA%B8%B0/">
         
         
 
@@ -391,11 +391,11 @@
                 
                     
 <article class="has-image">
-    <a href="rollinkg.github.io/p/android-studio-mpandroidchart-%EB%A7%89%EB%8C%80-%EA%B7%B8%EB%9E%98%ED%94%84-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/">
+    <a href="/p/android-studio-mpandroidchart-%EB%A7%89%EB%8C%80-%EA%B7%B8%EB%9E%98%ED%94%84-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/">
         
         
             <div class="article-image">
-                <img src="/rollinkg.github.io/p/android-studio-mpandroidchart-%EB%A7%89%EB%8C%80-%EA%B7%B8%EB%9E%98%ED%94%84-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/_huf941de4769045cdfa8c9ee7036519a2a_35369_36687b530fa140121781e790cfd060e7.jpg" 
+                <img src="/p/android-studio-mpandroidchart-%EB%A7%89%EB%8C%80-%EA%B7%B8%EB%9E%98%ED%94%84-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/_huf941de4769045cdfa8c9ee7036519a2a_35369_36687b530fa140121781e790cfd060e7.jpg" 
                         width="250" 
                         height="150" 
                         loading="lazy" 
@@ -413,11 +413,11 @@
                 
                     
 <article class="has-image">
-    <a href="rollinkg.github.io/p/android-sqlite-%EC%B6%94%EC%83%81%ED%99%94-%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC-room-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/">
+    <a href="/p/android-sqlite-%EC%B6%94%EC%83%81%ED%99%94-%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC-room-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/">
         
         
             <div class="article-image">
-                <img src="/rollinkg.github.io/p/android-sqlite-%EC%B6%94%EC%83%81%ED%99%94-%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC-room-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/_hu0a3f1163de68d0b9471979ebf0ecf11e_32400_a354a9a1f5102742bceb4ec236f4ce2f.jpg" 
+                <img src="/p/android-sqlite-%EC%B6%94%EC%83%81%ED%99%94-%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC-room-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/_hu0a3f1163de68d0b9471979ebf0ecf11e_32400_a354a9a1f5102742bceb4ec236f4ce2f.jpg" 
                         width="250" 
                         height="150" 
                         loading="lazy" 
@@ -435,11 +435,11 @@
                 
                     
 <article class="has-image">
-    <a href="rollinkg.github.io/p/android-studio-databinding%EC%9C%BC%EB%A1%9C-mvvm-%ED%8C%A8%ED%84%B4-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/">
+    <a href="/p/android-studio-databinding%EC%9C%BC%EB%A1%9C-mvvm-%ED%8C%A8%ED%84%B4-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/">
         
         
             <div class="article-image">
-                <img src="/rollinkg.github.io/p/android-studio-databinding%EC%9C%BC%EB%A1%9C-mvvm-%ED%8C%A8%ED%84%B4-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/_hud7e36f7e20e71be184458283bdae4646_55974_23a5d351d2fc2374f952239b6e9c423a.jpg" 
+                <img src="/p/android-studio-databinding%EC%9C%BC%EB%A1%9C-mvvm-%ED%8C%A8%ED%84%B4-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/_hud7e36f7e20e71be184458283bdae4646_55974_23a5d351d2fc2374f952239b6e9c423a.jpg" 
                         width="250" 
                         height="150" 
                         loading="lazy" 
@@ -603,7 +603,7 @@
                 src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
                 defer="false"
                 >
-            </script><script type="text/javascript" src="/rollinkg.github.io/ts/main.js" defer></script>
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
 <script>
     (function () {
         const customFont = document.createElement('link');
