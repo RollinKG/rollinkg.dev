@@ -1,20 +1,17 @@
 <!DOCTYPE html>
 <html lang="ko-kr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='&#43;&#43;&#43; author = &amp;ldquo;RollinKG&amp;rdquo; title = &amp;ldquo;Android Studio Firebase Firestore에서 Glide로 이미지 가져오기&amp;rdquo; date = &amp;ldquo;2020-09-09&amp;rdquo; description = &amp;ldquo;Android Studio / Kotlin&amp;rdquo; tags = [ &amp;ldquo;android&amp;rdquo;, &amp;ldquo;kotlin&amp;rdquo;, &amp;ldquo;Firebase&amp;rdquo; ] categories = [ &amp;ldquo;android&amp;rdquo;, ] image = &amp;ldquo;matt-le-SJSpo9hQf7s-unsplash.jpg&amp;rdquo; &#43;&#43;&#43;
-'><title>Android Studio Firebase Firestore에서 Glide로 이미지 가져오기</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Android Studio / Kotlin'><title>Android Studio Firebase Firestore에서 Glide로 이미지 가져오기</title>
 
 <link rel='canonical' href='https://rollinkg.dev/p/android-studio-firebase-firestore%EC%97%90%EC%84%9C-glide%EB%A1%9C-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EA%B0%80%EC%A0%B8%EC%98%A4%EA%B8%B0/'>
 
 <link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='Android Studio Firebase Firestore에서 Glide로 이미지 가져오기'>
-<meta property='og:description' content='&#43;&#43;&#43; author = &amp;ldquo;RollinKG&amp;rdquo; title = &amp;ldquo;Android Studio Firebase Firestore에서 Glide로 이미지 가져오기&amp;rdquo; date = &amp;ldquo;2020-09-09&amp;rdquo; description = &amp;ldquo;Android Studio / Kotlin&amp;rdquo; tags = [ &amp;ldquo;android&amp;rdquo;, &amp;ldquo;kotlin&amp;rdquo;, &amp;ldquo;Firebase&amp;rdquo; ] categories = [ &amp;ldquo;android&amp;rdquo;, ] image = &amp;ldquo;matt-le-SJSpo9hQf7s-unsplash.jpg&amp;rdquo; &#43;&#43;&#43;
-'>
+<meta property='og:description' content='Android Studio / Kotlin'>
 <meta property='og:url' content='https://rollinkg.dev/p/android-studio-firebase-firestore%EC%97%90%EC%84%9C-glide%EB%A1%9C-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EA%B0%80%EC%A0%B8%EC%98%A4%EA%B8%B0/'>
 <meta property='og:site_name' content='RollinKG&#39;s Devlog'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Android Studio' /><meta property='article:published_time' content='2020-09-09T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2020-09-09T00:00:00&#43;00:00'/>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='android' /><meta property='article:tag' content='kotlin' /><meta property='article:tag' content='Firebase' /><meta property='article:published_time' content='2020-09-09T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2020-09-09T00:00:00&#43;00:00'/>
 <meta name="twitter:title" content="Android Studio Firebase Firestore에서 Glide로 이미지 가져오기">
-<meta name="twitter:description" content="&#43;&#43;&#43; author = &amp;ldquo;RollinKG&amp;rdquo; title = &amp;ldquo;Android Studio Firebase Firestore에서 Glide로 이미지 가져오기&amp;rdquo; date = &amp;ldquo;2020-09-09&amp;rdquo; description = &amp;ldquo;Android Studio / Kotlin&amp;rdquo; tags = [ &amp;ldquo;android&amp;rdquo;, &amp;ldquo;kotlin&amp;rdquo;, &amp;ldquo;Firebase&amp;rdquo; ] categories = [ &amp;ldquo;android&amp;rdquo;, ] image = &amp;ldquo;matt-le-SJSpo9hQf7s-unsplash.jpg&amp;rdquo; &#43;&#43;&#43;
-">
+<meta name="twitter:description" content="Android Studio / Kotlin">
 <script type="application/javascript">
 var doNotTrack = false;
 if (!doNotTrack) {
@@ -202,11 +199,23 @@ if (!doNotTrack) {
 
     <div class="article-details">
     
+    <header class="article-category">
+        
+            <a href="/categories/android/" style="background-color: #3DDC84; color: #fff;">
+                Android
+            </a>
+        
+    </header>
+    
 
     <h2 class="article-title">
         <a href="/p/android-studio-firebase-firestore%EC%97%90%EC%84%9C-glide%EB%A1%9C-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EA%B0%80%EC%A0%B8%EC%98%A4%EA%B8%B0/">Android Studio Firebase Firestore에서 Glide로 이미지 가져오기</a>
     </h2>
 
+    
+    <h3 class="article-subtitle">
+        Android Studio / Kotlin
+    </h3>
     <footer class="article-time">
         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -221,22 +230,7 @@ if (!doNotTrack) {
 </header>
 
     <section class="article-content">
-    <p>+++
-author = &ldquo;RollinKG&rdquo;
-title = &ldquo;Android Studio Firebase Firestore에서 Glide로 이미지 가져오기&rdquo;
-date = &ldquo;2020-09-09&rdquo;
-description = &ldquo;Android Studio / Kotlin&rdquo;
-tags = [
-&ldquo;android&rdquo;,
-&ldquo;kotlin&rdquo;,
-&ldquo;Firebase&rdquo;
-]
-categories = [
-&ldquo;android&rdquo;,
-]
-image = &ldquo;matt-le-SJSpo9hQf7s-unsplash.jpg&rdquo;
-+++</p>
-<hr>
+    <hr>
 <hr>
 <h2 id="1-firebase-storage-참조-만들기">1. Firebase Storage 참조 만들기</h2>
 <div class="highlight"><pre class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="k">var</span> <span class="py">storage</span> <span class="p">=</span> <span class="n">firebase</span><span class="p">.</span><span class="n">storage</span><span class="p">;</span>
@@ -274,7 +268,11 @@ image = &ldquo;matt-le-SJSpo9hQf7s-unsplash.jpg&rdquo;
     
     <section class="article-tags">
         
-            <a href="/tags/android-studio/">Android Studio</a>
+            <a href="/tags/android/">android</a>
+        
+            <a href="/tags/kotlin/">kotlin</a>
+        
+            <a href="/tags/firebase/">Firebase</a>
         
     </section>
 
@@ -298,6 +296,113 @@ image = &ldquo;matt-le-SJSpo9hQf7s-unsplash.jpg&rdquo;
 
     <aside class="related-contents--wrapper">
     
+    
+        <h2 class="section-title">Related contents</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="has-image">
+    <a href="/p/android-studio-recyclerview-item-%EB%82%B4%EB%B6%80%EC%97%90-databinding-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/">
+        
+        
+            <div class="article-image">
+                <img src="/p/android-studio-recyclerview-item-%EB%82%B4%EB%B6%80%EC%97%90-databinding-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/_hud7e36f7e20e71be184458283bdae4646_55974_23a5d351d2fc2374f952239b6e9c423a.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="" 
+                        data-hash="md5-xRTZFpFxc6SKQuARS0aZYQ==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Android Studio RecyclerView Item 내부에 Databinding 적용하기</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/p/android-studio-binding-adapter-%EB%B0%94%EC%9D%B8%EB%94%A9-%EC%96%B4%EB%8C%91%ED%84%B0-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/">
+        
+        
+            <div class="article-image">
+                <img src="/p/android-studio-binding-adapter-%EB%B0%94%EC%9D%B8%EB%94%A9-%EC%96%B4%EB%8C%91%ED%84%B0-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/_hu958d513eeefe5556a31d065479ecc5ac_14205_7bffa90d1e66ca9b8184fda08a99dc7e.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="" 
+                        data-hash="md5-jq4GZk3fs&#43;jcbgAHVstwOw==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Android Studio Binding Adapter 바인딩 어댑터 사용하기</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/p/android-livedata-%EC%95%8C%EC%95%84%EB%B3%B4%EA%B8%B0/">
+        
+        
+            <div class="article-image">
+                <img src="/p/android-livedata-%EC%95%8C%EC%95%84%EB%B3%B4%EA%B8%B0/_hu0a3f1163de68d0b9471979ebf0ecf11e_32400_a354a9a1f5102742bceb4ec236f4ce2f.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="" 
+                        data-hash="md5-rC&#43;UhC7sa7h6Y66uIugvQQ==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Android LiveData 알아보기</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/android-studio-constraintlayout-%EC%95%A0%EB%8B%88%EB%A9%94%EC%9D%B4%EC%85%98-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Android Studio ConstraintLayout 애니메이션 적용하기</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/p/android-studio-mpandroidchart-%ED%8C%8C%EC%9D%B4-%EA%B7%B8%EB%9E%98%ED%94%84-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/">
+        
+        
+            <div class="article-image">
+                <img src="/p/android-studio-mpandroidchart-%ED%8C%8C%EC%9D%B4-%EA%B7%B8%EB%9E%98%ED%94%84-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/_hu958d513eeefe5556a31d065479ecc5ac_14205_7bffa90d1e66ca9b8184fda08a99dc7e.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="" 
+                        data-hash="md5-jq4GZk3fs&#43;jcbgAHVstwOw==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Android Studio MPAndroidChart 파이 그래프 사용하기</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
     
 </aside>
 

@@ -8,11 +8,11 @@
     <language>ko-kr</language>
     <lastBuildDate>Wed, 07 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://rollinkg.dev/post/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Android Studio RecyclerView Item 내부에서 Databinding</title>
-      <link>https://rollinkg.dev/p/android-studio-recyclerview-item-%EB%82%B4%EB%B6%80%EC%97%90%EC%84%9C-databinding/</link>
+      <title>Android Studio RecyclerView Item 내부에 Databinding 적용하기</title>
+      <link>https://rollinkg.dev/p/android-studio-recyclerview-item-%EB%82%B4%EB%B6%80%EC%97%90-databinding-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/</link>
       <pubDate>Wed, 07 Oct 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://rollinkg.dev/p/android-studio-recyclerview-item-%EB%82%B4%EB%B6%80%EC%97%90%EC%84%9C-databinding/</guid>
+      <guid>https://rollinkg.dev/p/android-studio-recyclerview-item-%EB%82%B4%EB%B6%80%EC%97%90-databinding-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/</guid>
       <description></description>
     </item>
     
@@ -32,21 +32,7 @@
       <pubDate>Wed, 09 Sep 2020 00:00:00 +0000</pubDate>
       
       <guid>https://rollinkg.dev/p/android-studio-firebase-firestore%EC%97%90%EC%84%9C-glide%EB%A1%9C-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EA%B0%80%EC%A0%B8%EC%98%A4%EA%B8%B0/</guid>
-      <description>&lt;p&gt;+++
-author = &amp;ldquo;RollinKG&amp;rdquo;
-title = &amp;ldquo;Android Studio Firebase Firestore에서 Glide로 이미지 가져오기&amp;rdquo;
-date = &amp;ldquo;2020-09-09&amp;rdquo;
-description = &amp;ldquo;Android Studio / Kotlin&amp;rdquo;
-tags = [
-&amp;ldquo;android&amp;rdquo;,
-&amp;ldquo;kotlin&amp;rdquo;,
-&amp;ldquo;Firebase&amp;rdquo;
-]
-categories = [
-&amp;ldquo;android&amp;rdquo;,
-]
-image = &amp;ldquo;matt-le-SJSpo9hQf7s-unsplash.jpg&amp;rdquo;
-+++&lt;/p&gt;</description>
+      <description></description>
     </item>
     
     <item>
@@ -56,6 +42,15 @@ image = &amp;ldquo;matt-le-SJSpo9hQf7s-unsplash.jpg&amp;rdquo;
       
       <guid>https://rollinkg.dev/p/android-livedata-%EC%95%8C%EC%95%84%EB%B3%B4%EA%B8%B0/</guid>
       <description>&lt;p&gt;&lt;strong&gt;LiveData&lt;/strong&gt;는 &lt;code&gt;Observable&lt;/code&gt;한 데이터 타입입니다. 일반 Observable한 변수와는 다르게 LiveData는 &lt;code&gt;LifeCycle&lt;/code&gt;을 인식합니다. 수명주기 인식을 통해 활성 상태 &lt;em&gt;(STARTED, RESUMED)&lt;/em&gt; 에 있는 앱 컴포넌트만 업데이트합니다. 따라서 UI와 데이터를 처리할 때 메모리 누수라던지 수명주기로 인한 ANR을 신경쓰지 않아도 됩니다. 또한 &lt;code&gt;MVVM&lt;/code&gt; 패턴 및 &lt;code&gt;databinding&lt;/code&gt;을 사용하는데 핵심적인 역할을 합니다.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Android Studio ConstraintLayout 애니메이션 적용하기</title>
+      <link>https://rollinkg.dev/p/android-studio-constraintlayout-%EC%95%A0%EB%8B%88%EB%A9%94%EC%9D%B4%EC%85%98-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/</link>
+      <pubDate>Wed, 05 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://rollinkg.dev/p/android-studio-constraintlayout-%EC%95%A0%EB%8B%88%EB%A9%94%EC%9D%B4%EC%85%98-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;ConstraintLayout&lt;/strong&gt;은 플랫한 View 구조로 복잡한 레이아웃을 만들 수 있는 &lt;code&gt;ViewGroup&lt;/code&gt; 입니다. &lt;code&gt;View&lt;/code&gt;간 &lt;strong&gt;관계&lt;/strong&gt; , &lt;strong&gt;제약조건(Constraint)&lt;/strong&gt; 에  따라 레이아웃이 결정되다는 점에서 RelativeLayout보다 유연하고 LayoutEditor에서 사용하기 쉽습니다. 이번 포스트에서는 ConstraintLayout의 제약 정보 조건을 담고있는 &lt;code&gt;ConstraintSet&lt;/code&gt; 객체를 이용해 런타임 중 제약 조건을 변경하고 애니메이션을 주는 방법을 다루겠습니다.&lt;/p&gt;</description>
     </item>
     
     <item>

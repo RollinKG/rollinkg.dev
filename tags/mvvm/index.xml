@@ -8,11 +8,11 @@
     <language>ko-kr</language>
     <lastBuildDate>Wed, 07 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://rollinkg.dev/tags/mvvm/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Android Studio RecyclerView Item 내부에서 Databinding</title>
-      <link>https://rollinkg.dev/p/android-studio-recyclerview-item-%EB%82%B4%EB%B6%80%EC%97%90%EC%84%9C-databinding/</link>
+      <title>Android Studio RecyclerView Item 내부에 Databinding 적용하기</title>
+      <link>https://rollinkg.dev/p/android-studio-recyclerview-item-%EB%82%B4%EB%B6%80%EC%97%90-databinding-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/</link>
       <pubDate>Wed, 07 Oct 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://rollinkg.dev/p/android-studio-recyclerview-item-%EB%82%B4%EB%B6%80%EC%97%90%EC%84%9C-databinding/</guid>
+      <guid>https://rollinkg.dev/p/android-studio-recyclerview-item-%EB%82%B4%EB%B6%80%EC%97%90-databinding-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/</guid>
       <description></description>
     </item>
     

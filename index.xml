@@ -7,12 +7,12 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>ko-kr</language>
         <lastBuildDate>Sun, 02 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://rollinkg.dev/index.xml" rel="self" type="application/rss+xml" /><item>
-        <title>Android Studio RecyclerView Item 내부에서 Databinding</title>
-        <link>https://rollinkg.dev/p/android-studio-recyclerview-item-%EB%82%B4%EB%B6%80%EC%97%90%EC%84%9C-databinding/</link>
+        <title>Android Studio RecyclerView Item 내부에 Databinding 적용하기</title>
+        <link>https://rollinkg.dev/p/android-studio-recyclerview-item-%EB%82%B4%EB%B6%80%EC%97%90-databinding-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/</link>
         <pubDate>Wed, 07 Oct 2020 00:00:00 +0000</pubDate>
         
-        <guid>https://rollinkg.dev/p/android-studio-recyclerview-item-%EB%82%B4%EB%B6%80%EC%97%90%EC%84%9C-databinding/</guid>
-        <description>&lt;img src="https://rollinkg.dev/matt-le-SJSpo9hQf7s-unsplash.jpg" alt="Featured image of post Android Studio RecyclerView Item 내부에서 Databinding" /&gt;&lt;hr&gt;
+        <guid>https://rollinkg.dev/p/android-studio-recyclerview-item-%EB%82%B4%EB%B6%80%EC%97%90-databinding-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/</guid>
+        <description>&lt;img src="https://rollinkg.dev/p/android-studio-recyclerview-item-%EB%82%B4%EB%B6%80%EC%97%90-databinding-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/pawel-czerwinski-8uZPynIu-rQ-unsplash.jpg" alt="Featured image of post Android Studio RecyclerView Item 내부에 Databinding 적용하기" /&gt;&lt;hr&gt;
 &lt;h2 id=&#34;1-recycler-view-livedata&#34;&gt;1. Recycler View LiveData&lt;/h2&gt;
 &lt;p&gt;다음과 같은 LiveData로 Recycler View 내부 Item을 구성한다고 생각해보자.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span class=&#34;k&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;myData&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;val&lt;/span&gt; &lt;span class=&#34;py&#34;&gt;data1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;MutableLiveData&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;(),&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;val&lt;/span&gt; &lt;span class=&#34;py&#34;&gt;data2&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;val&lt;/span&gt; &lt;span class=&#34;py&#34;&gt;expand&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;MutableLiveData&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Boolean&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;())&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
@@ -119,7 +119,7 @@
         <pubDate>Thu, 10 Sep 2020 00:00:00 +0000</pubDate>
         
         <guid>https://rollinkg.dev/p/android-studio-binding-adapter-%EB%B0%94%EC%9D%B8%EB%94%A9-%EC%96%B4%EB%8C%91%ED%84%B0-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/</guid>
-        <description>&lt;p&gt;앞선 &lt;a class=&#34;link&#34; href=&#34;https://rollinkg.github.io/blog/android_mvvm/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+        <description>&lt;img src="https://rollinkg.dev/p/android-studio-binding-adapter-%EB%B0%94%EC%9D%B8%EB%94%A9-%EC%96%B4%EB%8C%91%ED%84%B0-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/matt-le-SJSpo9hQf7s-unsplash.jpg" alt="Featured image of post Android Studio Binding Adapter 바인딩 어댑터 사용하기" /&gt;&lt;p&gt;앞선 &lt;a class=&#34;link&#34; href=&#34;https://rollinkg.github.io/blog/android_mvvm/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;MVVM 포스트&lt;/a&gt; 에선 databinding을 이용하여 UI 요소와 &lt;code&gt;LiveData&lt;/code&gt; 변수를 바인딩하는 방법을 알아보았습니다. 여기서 의문이 드는 점이 있습니다. &lt;strong&gt;TextView의 텍스트&lt;/strong&gt; 와 &lt;strong&gt;String&lt;/strong&gt; 처럼 바로 1대1 매치가 되는 값이 아니라, 만약 &lt;code&gt;ImageView&lt;/code&gt;에 Databinding을 적용하고 싶다면? RecyclerView의 리스트에 Databinding을 적용하고 싶다면? 단순히 TextView와는 다르게 내부에서 처리를 해주어야 할 것입니다. 이를 쉽게 하는 방법 중 하나가 &lt;code&gt;BindingAdapter&lt;/code&gt;를 이용하는 것입니다. &lt;code&gt;BindingAdapter&lt;/code&gt; 내부를 원하는 방식으로 구현하면 xml 코드에서 변수에 바인딩만 하는 방식으로 원하는 UI 요소를 구성할 수 있습니다.&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id=&#34;1-binding-adpater&#34;&gt;1. Binding Adpater&lt;/h2&gt;
@@ -188,22 +188,7 @@
         <pubDate>Wed, 09 Sep 2020 00:00:00 +0000</pubDate>
         
         <guid>https://rollinkg.dev/p/android-studio-firebase-firestore%EC%97%90%EC%84%9C-glide%EB%A1%9C-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EA%B0%80%EC%A0%B8%EC%98%A4%EA%B8%B0/</guid>
-        <description>&lt;p&gt;+++
-author = &amp;ldquo;RollinKG&amp;rdquo;
-title = &amp;ldquo;Android Studio Firebase Firestore에서 Glide로 이미지 가져오기&amp;rdquo;
-date = &amp;ldquo;2020-09-09&amp;rdquo;
-description = &amp;ldquo;Android Studio / Kotlin&amp;rdquo;
-tags = [
-&amp;ldquo;android&amp;rdquo;,
-&amp;ldquo;kotlin&amp;rdquo;,
-&amp;ldquo;Firebase&amp;rdquo;
-]
-categories = [
-&amp;ldquo;android&amp;rdquo;,
-]
-image = &amp;ldquo;matt-le-SJSpo9hQf7s-unsplash.jpg&amp;rdquo;
-+++&lt;/p&gt;
-&lt;hr&gt;
+        <description>&lt;hr&gt;
 &lt;hr&gt;
 &lt;h2 id=&#34;1-firebase-storage-참조-만들기&#34;&gt;1. Firebase Storage 참조 만들기&lt;/h2&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span class=&#34;k&#34;&gt;var&lt;/span&gt; &lt;span class=&#34;py&#34;&gt;storage&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;firebase&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;storage&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
@@ -241,7 +226,7 @@ image = &amp;ldquo;matt-le-SJSpo9hQf7s-unsplash.jpg&amp;rdquo;
         <pubDate>Tue, 08 Sep 2020 00:00:00 +0000</pubDate>
         
         <guid>https://rollinkg.dev/p/android-livedata-%EC%95%8C%EC%95%84%EB%B3%B4%EA%B8%B0/</guid>
-        <description>&lt;p&gt;&lt;strong&gt;LiveData&lt;/strong&gt;는 &lt;code&gt;Observable&lt;/code&gt;한 데이터 타입입니다. 일반 Observable한 변수와는 다르게 LiveData는 &lt;code&gt;LifeCycle&lt;/code&gt;을 인식합니다. 수명주기 인식을 통해 활성 상태 &lt;em&gt;(STARTED, RESUMED)&lt;/em&gt; 에 있는 앱 컴포넌트만 업데이트합니다. 따라서 UI와 데이터를 처리할 때 메모리 누수라던지 수명주기로 인한 ANR을 신경쓰지 않아도 됩니다. 또한 &lt;code&gt;MVVM&lt;/code&gt; 패턴 및 &lt;code&gt;databinding&lt;/code&gt;을 사용하는데 핵심적인 역할을 합니다.&lt;/p&gt;
+        <description>&lt;img src="https://rollinkg.dev/p/android-livedata-%EC%95%8C%EC%95%84%EB%B3%B4%EA%B8%B0/luca-bravo-alS7ewQ41M8-unsplash.jpg" alt="Featured image of post Android LiveData 알아보기" /&gt;&lt;p&gt;&lt;strong&gt;LiveData&lt;/strong&gt;는 &lt;code&gt;Observable&lt;/code&gt;한 데이터 타입입니다. 일반 Observable한 변수와는 다르게 LiveData는 &lt;code&gt;LifeCycle&lt;/code&gt;을 인식합니다. 수명주기 인식을 통해 활성 상태 &lt;em&gt;(STARTED, RESUMED)&lt;/em&gt; 에 있는 앱 컴포넌트만 업데이트합니다. 따라서 UI와 데이터를 처리할 때 메모리 누수라던지 수명주기로 인한 ANR을 신경쓰지 않아도 됩니다. 또한 &lt;code&gt;MVVM&lt;/code&gt; 패턴 및 &lt;code&gt;databinding&lt;/code&gt;을 사용하는데 핵심적인 역할을 합니다.&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id=&#34;1-livedata-객체-만들기&#34;&gt;1. LiveData 객체 만들기&lt;/h2&gt;
 &lt;p&gt;&lt;code&gt;LiveData&lt;/code&gt;는 Generic하게 생성할 수 있어 &lt;code&gt;List&lt;/code&gt;와 같은 &lt;code&gt;Collection&lt;/code&gt; 및 모든 데이터와 사용할 수 있습니다. 아래 코드는 String 타입의 LiveData를 선언한 코드입니다. 또한 LiveData의 인스턴스는 일반적으로 &lt;code&gt;ViewModel&lt;/code&gt; 클래스 내에서 이루어집니다. 그 이유는 &lt;code&gt;Activity&lt;/code&gt;와 &lt;code&gt;Fragment&lt;/code&gt;는 데이터 표시만 담당하고, 데이터 상태는 ViewModel에 저장하는 일종의 역할 분담이라고 보시면 됩니다. 자세한 구조는 [MVVM 포스트]에 작성하였습니다.&lt;/p&gt;
@@ -298,6 +283,44 @@ image = &amp;ldquo;matt-le-SJSpo9hQf7s-unsplash.jpg&amp;rdquo;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://developer.android.com/topic/libraries/architecture/livedata?hl=ko&#34;&gt;https://developer.android.com/topic/libraries/architecture/livedata?hl=ko&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;</description>
+        </item>
+        <item>
+        <title>Android Studio ConstraintLayout 애니메이션 적용하기</title>
+        <link>https://rollinkg.dev/p/android-studio-constraintlayout-%EC%95%A0%EB%8B%88%EB%A9%94%EC%9D%B4%EC%85%98-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/</link>
+        <pubDate>Wed, 05 Aug 2020 00:00:00 +0000</pubDate>
+        
+        <guid>https://rollinkg.dev/p/android-studio-constraintlayout-%EC%95%A0%EB%8B%88%EB%A9%94%EC%9D%B4%EC%85%98-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/</guid>
+        <description>&lt;p&gt;&lt;strong&gt;ConstraintLayout&lt;/strong&gt;은 플랫한 View 구조로 복잡한 레이아웃을 만들 수 있는 &lt;code&gt;ViewGroup&lt;/code&gt; 입니다. &lt;code&gt;View&lt;/code&gt;간 &lt;strong&gt;관계&lt;/strong&gt; , &lt;strong&gt;제약조건(Constraint)&lt;/strong&gt; 에  따라 레이아웃이 결정되다는 점에서 RelativeLayout보다 유연하고 LayoutEditor에서 사용하기 쉽습니다. 이번 포스트에서는 ConstraintLayout의 제약 정보 조건을 담고있는 &lt;code&gt;ConstraintSet&lt;/code&gt; 객체를 이용해 런타임 중 제약 조건을 변경하고 애니메이션을 주는 방법을 다루겠습니다.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;1-constraintset-이란&#34;&gt;1. ConstraintSet 이란?&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;ConstraintSet&lt;/code&gt;은 ConstraintLayout에 속해있는 View의 &lt;strong&gt;Constraint 정보&lt;/strong&gt; 를 담고 있는 객체입니다. 아래 코드를 통하여 원하는 &lt;code&gt;ConstraintLayout&lt;/code&gt;에서 원하는 &lt;code&gt;ConstraintSet&lt;/code&gt;을 가져옵니다.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span class=&#34;k&#34;&gt;var&lt;/span&gt; &lt;span class=&#34;py&#34;&gt;constraintSet&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ConstraintSet&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ConstraintSet&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+
+&lt;span class=&#34;n&#34;&gt;constraintSet&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;clone&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;findViewById&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;R&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;id&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;constraintlayout&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;이때 접근하는 &lt;code&gt;ConstraintLayout&lt;/code&gt;의 &lt;code&gt;자식 View&lt;/code&gt;들은 반드시 &lt;strong&gt;id&lt;/strong&gt;를 가지고 있어야 합니다. &lt;code&gt;ConstraintSet&lt;/code&gt;에서 제약 정보를 가져올때 &lt;code&gt;id&lt;/code&gt;가 지정되어 있지 않으면 런타임 에러를 일으킵니다.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;2-constraintset-제약-조건-변경&#34;&gt;2. ConstraintSet 제약 조건 변경&lt;/h2&gt;
+&lt;p&gt;다음은 &lt;code&gt;ConstraintSet&lt;/code&gt;에서 내부 View의 제약조건을 update하는 예제입니다.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span class=&#34;c1&#34;&gt;//example
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;constraintSet&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;setVisibility&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;R&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;id&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;text_1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;View&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;VISIBLE&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;constraintSet&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;setVerticalBias&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;R&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;id&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;img_1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;bias&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;0.2f&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;ConstrainSet&lt;/code&gt;을 사용하여 뷰를 업데이트 하는 경우, 모두 ConstraintSet을 통해 업데이트 하는 것을 추천합니다. 후에 ConstraintSet을 다시 적용하는 과정에서 전의 변경점은 덮어 씌워지기 때문입니다.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;3-constraintset-적용-및-animate&#34;&gt;3. ConstraintSet 적용 및 Animate&lt;/h2&gt;
+&lt;p&gt;원하는 작업이 끝났으면 아래 코드로 바뀐 &lt;code&gt;ConstraintSet&lt;/code&gt;을 적용합니다.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span class=&#34;n&#34;&gt;constraintSet&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;applyTo&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;findViewById&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;R&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;id&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;constraintlayout&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;ConstraintSet&lt;/code&gt;을 사용하는 주된 이유는 내부 제약조건을 변경함에도 애니메이션을 적용하기 위함입니다. View의 &lt;code&gt;Constraint Top, Bottom, Left, Right&lt;/code&gt; 혹은 &lt;code&gt;Constraint bias&lt;/code&gt;의 경우 다음과 같은 방법으로만 애니메이션을 적용할 수 있습니다.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span class=&#34;k&#34;&gt;val&lt;/span&gt; &lt;span class=&#34;py&#34;&gt;transition&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;AutoTransition&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;transition&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;duration&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;500&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;transition&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;interpolator&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;AccelerateDecelerateInterpolator&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;TransitionManager&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;beginDelayedTransition&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;findViewById&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;R&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;id&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;constraintlayout&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;transition&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;//apply
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;constraintSet&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;applyTo&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;binding&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;root&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;위 코드와 같이 &lt;code&gt;apply&lt;/code&gt; 전 &lt;code&gt;transition&lt;/code&gt;으로 애니메이션을 보간하면 제약 조건 변경에 따른 레이아웃 업데이트가 부드럽게 &lt;code&gt;animate&lt;/code&gt;되어 이루어집니다.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;reference&#34;&gt;Reference&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://stackoverflow.com/questions/40819965/layout-inside-toolbar-is-shifted-to-the-right&#34;&gt;https://stackoverflow.com/questions/40819965/layout-inside-toolbar-is-shifted-to-the-right&lt;/a&gt;&lt;/p&gt;</description>
         </item>
         <item>
         <title>Android Studio MPAndroidChart 파이 그래프 사용하기</title>
