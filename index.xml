@@ -1,0 +1,564 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>RollinKG&#39;s Devlog</title>
+        <link>rollinkg.github.io/</link>
+        <description>Recent content on RollinKG&#39;s Devlog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>ko-kr</language>
+        <lastBuildDate>Sun, 02 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="rollinkg.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Android LiveData 알아보기</title>
+        <link>rollinkg.github.io/p/android-livedata-%EC%95%8C%EC%95%84%EB%B3%B4%EA%B8%B0/</link>
+        <pubDate>Tue, 08 Sep 2020 00:00:00 +0000</pubDate>
+        
+        <guid>rollinkg.github.io/p/android-livedata-%EC%95%8C%EC%95%84%EB%B3%B4%EA%B8%B0/</guid>
+        <description>&lt;p&gt;&lt;strong&gt;LiveData&lt;/strong&gt;는 &lt;code&gt;Observable&lt;/code&gt;한 데이터 타입입니다. 일반 Observable한 변수와는 다르게 LiveData는 &lt;code&gt;LifeCycle&lt;/code&gt;을 인식합니다. 수명주기 인식을 통해 활성 상태 &lt;em&gt;(STARTED, RESUMED)&lt;/em&gt; 에 있는 앱 컴포넌트만 업데이트합니다. 따라서 UI와 데이터를 처리할 때 메모리 누수라던지 수명주기로 인한 ANR을 신경쓰지 않아도 됩니다. 또한 &lt;code&gt;MVVM&lt;/code&gt; 패턴 및 &lt;code&gt;databinding&lt;/code&gt;을 사용하는데 핵심적인 역할을 합니다.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;1-livedata-객체-만들기&#34;&gt;1. LiveData 객체 만들기&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;LiveData&lt;/code&gt;는 Generic하게 생성할 수 있어 &lt;code&gt;List&lt;/code&gt;와 같은 &lt;code&gt;Collection&lt;/code&gt; 및 모든 데이터와 사용할 수 있습니다. 아래 코드는 String 타입의 LiveData를 선언한 코드입니다. 또한 LiveData의 인스턴스는 일반적으로 &lt;code&gt;ViewModel&lt;/code&gt; 클래스 내에서 이루어집니다. 그 이유는 &lt;code&gt;Activity&lt;/code&gt;와 &lt;code&gt;Fragment&lt;/code&gt;는 데이터 표시만 담당하고, 데이터 상태는 ViewModel에 저장하는 일종의 역할 분담이라고 보시면 됩니다. 자세한 구조는 [MVVM 포스트]에 작성하였습니다.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span class=&#34;c1&#34;&gt;//문자열 LiveData 선언
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;//viewmodel.kt
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;val&lt;/span&gt; &lt;span class=&#34;py&#34;&gt;livedata&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;MutableLiveData&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;()&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;livedata&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;value&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Hello, World!&amp;#34;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id=&#34;2-livedata-객체-observe&#34;&gt;2. LiveData 객체 Observe&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;LiveData&lt;/code&gt;의 변화를 감지하는 방법에는 두가지가 있습니다. 2번 항목은 &lt;code&gt;Databinding&lt;/code&gt; 라이브러리 활용이므로 &lt;a class=&#34;link&#34; href=&#34;https://rollinkg.github.io/blog/android_mvvm/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;MVVM + Databinding&lt;/a&gt; 포스트에 자세하게 작성하였습니다. 이번 포스트에서는 1번 항목만 다루겠습니다.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Activity, Fragment에서 &lt;code&gt;Observer&lt;/code&gt;로 관찰&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Databinding으로 xml view 요소를 직접 LiveData와 바인딩&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;아래는 Activity의 &lt;code&gt;onCreate&lt;/code&gt; 내부에 Observer를 생성하여 viewmodel의 LiveData를 관찰하는 코드입니다.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span class=&#34;k&#34;&gt;override&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;fun&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;onCreate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+
+  &lt;span class=&#34;n&#34;&gt;viewmodel&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;livedata&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;observe&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Observer&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;it&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;
+      &lt;span class=&#34;c1&#34;&gt;//LiveData의 변화가 감지되면 이 코드블럭이 실행된다
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;      &lt;span class=&#34;n&#34;&gt;textView&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;text&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;it&lt;/span&gt;
+  &lt;span class=&#34;p&#34;&gt;})&lt;/span&gt;
+
+&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;여기서 주의깊게 보셔야할 점은 첫번째 인자로 전달된 &lt;code&gt;this&lt;/code&gt; 입니다. 여기서 &lt;code&gt;this&lt;/code&gt;는 &lt;code&gt;context&lt;/code&gt;나 &lt;code&gt;activity&lt;/code&gt;가 아닌 &lt;code&gt;lifecycleowner&lt;/code&gt;로써 전달되는 인자입니다. LiveData는 수명주기를 인식하므로, LiveData에게 수명주기를 제공할 객체를 전달하는 것입니다. &lt;strong&gt;Fragment&lt;/strong&gt;에서 Observer를 등록하는 경우 &lt;code&gt;this&lt;/code&gt;가 아닌 &lt;code&gt;lifecycleowner&lt;/code&gt;를  전달해야 합니다.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;3-livedata-확장&#34;&gt;3. LiveData 확장&lt;/h2&gt;
+&lt;p&gt;LiveData를 사용하다보면 저장된 값을 변경하거나 다른 방식으로 보여주고 싶을 때가 있습니다. 예를들어 서버에서 raw하게 넘어온 문자열을 파싱하거나 사용자에게 보기 좋도록 표시할때, LiveData의 &lt;code&gt;Transform&lt;/code&gt; 클래스를 이용하면 됩니다.&lt;/p&gt;
+&lt;h3 id=&#34;1-map&#34;&gt;1) map()&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;map()&lt;/code&gt;은 LiveData에 저장된 값에 함수를 적용하여 값을 반환합니다.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span class=&#34;k&#34;&gt;val&lt;/span&gt; &lt;span class=&#34;py&#34;&gt;userLiveData&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;LiveData&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;User&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;UserLiveData&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;val&lt;/span&gt; &lt;span class=&#34;py&#34;&gt;userName&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;LiveData&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Transformations&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;map&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;userLiveData&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+     &lt;span class=&#34;n&#34;&gt;user&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;${user.name}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;님 환영합니다!&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+    
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;2-switchmap&#34;&gt;2) switchMap()&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;map()&lt;/code&gt;과 유사하나 메소드의 리턴 타입이 값이 아닌 &lt;code&gt;LiveData&lt;/code&gt; 타입을 반환해야합니다.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span class=&#34;k&#34;&gt;private&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;fun&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;getUser&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;id&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;LiveData&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;User&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+  &lt;span class=&#34;k&#34;&gt;val&lt;/span&gt; &lt;span class=&#34;py&#34;&gt;liveData&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;MutableLiveData&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;MutableLiveData&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+  &lt;span class=&#34;n&#34;&gt;liveData&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;apply&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;value&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;${id}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;님 환영합니다!&amp;#34;&lt;/span&gt;
+  &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+
+  &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;liveData&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;val&lt;/span&gt; &lt;span class=&#34;py&#34;&gt;userId&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;LiveData&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;..&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;val&lt;/span&gt; &lt;span class=&#34;py&#34;&gt;user&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Transformations&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;switchMap&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;userId&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;id&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;getUser&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;id&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;Reference&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://developer.android.com/topic/libraries/architecture/livedata?hl=ko&#34;&gt;https://developer.android.com/topic/libraries/architecture/livedata?hl=ko&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+        </item>
+        <item>
+        <title>Android Studio MPAndroidChart 파이 그래프 사용하기</title>
+        <link>rollinkg.github.io/p/android-studio-mpandroidchart-%ED%8C%8C%EC%9D%B4-%EA%B7%B8%EB%9E%98%ED%94%84-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/</link>
+        <pubDate>Tue, 21 Jul 2020 00:00:00 +0000</pubDate>
+        
+        <guid>rollinkg.github.io/p/android-studio-mpandroidchart-%ED%8C%8C%EC%9D%B4-%EA%B7%B8%EB%9E%98%ED%94%84-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/</guid>
+        <description>&lt;img src="/rollinkg.github.io/p/android-studio-mpandroidchart-%ED%8C%8C%EC%9D%B4-%EA%B7%B8%EB%9E%98%ED%94%84-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/matt-le-SJSpo9hQf7s-unsplash.jpg" alt="Featured image of post Android Studio MPAndroidChart 파이 그래프 사용하기" /&gt;&lt;p&gt;Android UI 오픈소스 &lt;a class=&#34;link&#34; href=&#34;https://github.com/PhilJay/MPAndroidChart&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;MPAndroidChart&lt;/a&gt;는 쉽고 다양한 기능을 제공하는 오픈소스 차트 라이브러리입니다. 선, 막대, 파이, 버블 등 다양한 형태와 애니메이션까지 함께 지원하여 간단하게 안드로이드 앱에 시각적 차트 데이터를 삽입할 수 있습니다.&lt;/p&gt;
+&lt;p&gt;이번 포스트에서는 &lt;strong&gt;Pie Chart(파이 그래프)&lt;/strong&gt; 의 기본적인 사용법을 알아보겠습니다.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;1-import-mpandroidchart&#34;&gt;1. Import MPAndroidChart&lt;/h2&gt;
+&lt;p&gt;다음 &lt;a class=&#34;link&#34; href=&#34;https://github.com/PhilJay/MPAndroidChart&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;MPAndroidChart&lt;/a&gt; 링크에 들어가 최신 버전을 확인하고, Gradle에 다음 의존성을 추가합니다.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;dependencies {
+    ...
+    implementation &amp;#39;com.github.PhilJay:MPAndroidChart:v3.1.0&amp;#39;
+    ...
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;이후 Gradle Sync 해주시면 MPAndroidChart를 사용할 준비는 끝났습니다.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;2-piechart-view-추가&#34;&gt;2. PieChart View 추가&lt;/h2&gt;
+&lt;p&gt;원하는 xml 레이아웃에 &lt;code&gt;com.github.mikephil.charting.charts.PieChart&lt;/code&gt;를 추가하고 배치합니다. &lt;strong&gt;layout_height&lt;/strong&gt; 의 경우 &lt;code&gt;match_parent&lt;/code&gt; 혹은 &lt;code&gt;wrap_content&lt;/code&gt; 로 지정해 줄 경우, 차트가 보이지 않을 수 있습니다. 되도록이면 고정된 값으로 높이를 설정하는 걸 추천드립니다.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span class=&#34;nt&#34;&gt;&amp;lt;com.github.mikephil.charting.charts.PieChart&lt;/span&gt;
+    &lt;span class=&#34;na&#34;&gt;android:id=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;@+id/pie_chart&amp;#34;&lt;/span&gt;
+    &lt;span class=&#34;na&#34;&gt;android:layout_width=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;match_parent&amp;#34;&lt;/span&gt;
+    &lt;span class=&#34;na&#34;&gt;android:layout_height=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;200dp&amp;#34;&lt;/span&gt; &lt;span class=&#34;nt&#34;&gt;/&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id=&#34;3-piechart-코드-작성&#34;&gt;3. PieChart 코드 작성&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;Activity&lt;/code&gt;나 &lt;code&gt;Fragment&lt;/code&gt;에서 코드를 작성하여 차트를 초기화하는 과정입니다. 여러 클래스를 사용하기 때문에 제일 헷갈리는 부분입니다. 다음과 같은 데이터를 작성해야 합니다.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;  &lt;strong&gt;PieEntry&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;  &lt;strong&gt;PieDataSet&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;  &lt;strong&gt;PieData&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;위 순서대로 자세한 용도와 작성법을 설명드리겠습니다.&lt;/p&gt;
+&lt;h3 id=&#34;1-pieentry&#34;&gt;1) PieEntry&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;PieEntry&lt;/code&gt;에는 (value, label) 쌍으로 Bar Chart에 표시될 데이터를 저장합니다. 원하는 데이터를 &lt;code&gt;PieEntry&lt;/code&gt;로 만든 뒤, 이를 담는 리스트를 선언하여 추가하면 됩니다. PieEntry에 들어가는 value는 기본적으로 &lt;code&gt;float&lt;/code&gt;입니다. 이를 &lt;code&gt;Int&lt;/code&gt;나 원하는 &lt;code&gt;String&lt;/code&gt;으로 바꾸고 싶은 경우 추후에 &lt;code&gt;label&lt;/code&gt; 을 다는 작업을 거쳐야 합니다.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span class=&#34;c1&#34;&gt;//PieEntry를 담는 리스트
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;val&lt;/span&gt; &lt;span class=&#34;py&#34;&gt;entryList&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;mutableListOf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;PieEntry&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;()&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;//PieEntry로 값 추가 후 리스트에 담는다
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;entryList&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;add&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;PieEntry&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;5f&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;A&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;entryList&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;add&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;PieEntry&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;2f&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;B&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;entryList&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;add&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;PieEntry&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;2f&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;C&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;2-piedataset&#34;&gt;2) PieDataSet&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;PieDataSet&lt;/code&gt; 은 위에 작성된 &lt;code&gt;PieEntry&lt;/code&gt; 를 바탕으로 실제 &lt;strong&gt;Pie data set&lt;/strong&gt; 를 생성합니다. 단순 데이터인 &lt;code&gt;PieEntry&lt;/code&gt; 를 파이 모양으로 표시하기 위해 반드시 필요하며, 파이의 두께, 색, 텍스트 위치 등 다양한 설정을 할 수 있습니다.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;c1&#34;&gt;//위에서 만든 PieEntry 리스트를 인자로 준다
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;val&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;pieDataSet&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;PieDataSet&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;entryList&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;MyPieChart&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;//example
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;//다음과 같이 Pie 커스터마이징이 가능하다
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;pieDataSet&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;apply&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;c1&#34;&gt;//슬라이스 간격
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;n&#34;&gt;sliceSpace&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;2f&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;selectionShift&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;5f&lt;/span&gt;
+
+        &lt;span class=&#34;c1&#34;&gt;//슬라이스 색, 미리 정의하거나 resource로 가져온 색 리스트를 줘도 좋다
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;n&#34;&gt;colors&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;chartColors&lt;/span&gt;
+
+        &lt;span class=&#34;c1&#34;&gt;//value 위치, 크기 지정
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;n&#34;&gt;yValuePosition&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;PieDataSet&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;ValuePosition&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;OUTSIDE_SLICE&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;valueTextSize&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;11f&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;3-piedata&#34;&gt;3) PieData&lt;/h3&gt;
+&lt;p&gt;마지막으로 &lt;code&gt;PieChart&lt;/code&gt;에 보여질 데이터를 구성합니다.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span class=&#34;k&#34;&gt;val&lt;/span&gt; &lt;span class=&#34;py&#34;&gt;pieData&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;PieData&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;pieDataSet&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;PieDataSet&lt;/code&gt;과 마찬가지로 다양한 차트 커스터마이징 메소드를 제공합니다.&lt;/p&gt;
+&lt;h3 id=&#34;4-piechart&#34;&gt;4) PieChart&lt;/h3&gt;
+&lt;p&gt;xml에서 추가한 &lt;code&gt;PieChart&lt;/code&gt;의 객체를 선언하여, 위 과정을 통해 최종적으로 만들어진 &lt;code&gt;PieData&lt;/code&gt;를 건내주면 파이 그래프를 보여주기 위한 설정은 끝입니다. 아래 코드는 &lt;strong&gt;binding&lt;/strong&gt; 객체를 통하여 &lt;code&gt;pieChart&lt;/code&gt;에 접근합니다. 사용하는 라이브러리에 따라 &lt;code&gt;findViewById&lt;/code&gt; 혹은 &lt;code&gt;Kotlin Synthetic&lt;/code&gt;을 통해 어떠한 방법으로든 전달하시면됩니다.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span class=&#34;c1&#34;&gt;//binding으로 접근하여 pieData 전달
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;val&lt;/span&gt; &lt;span class=&#34;py&#34;&gt;pieChart&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;binding&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;pieChart&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;pieChart&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;data&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;pieData&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;//pieChart 갱신하여 데이터 표시
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;pieChart&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;invalidate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;위 과정을 마치면 성공적으로 차트가 그려진 것을 확인할 수 있다.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;4-piechart-설정-예제&#34;&gt;4. PieChart 설정 예제&lt;/h2&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/PhilJay/MPAndroidChart&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;MPAndroidChart&lt;/a&gt;는 바 색상, 텍스트, 애니메이션, 범례 등 다양한 부분의 커스터마이징이 가능합니다. 그 말인 즉슨, 내가 원하는 방식으로  차트를 보여주려면 꽤 많은 부분을 만져야합니다. 아래 코드는 &lt;code&gt;PieChart&lt;/code&gt;에서 자주 사용되는 설정 예제입니다. 물론 아래 코드보다 훨씬 많은 기능을 제공하므로 모든 기능을 살표보시려면 &lt;a class=&#34;link&#34; href=&#34;https://github.com/PhilJay/MPAndroidChart&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;MPAndroidChart&lt;/a&gt; Github를 방문해보는걸 추천드립니다.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;    &lt;span class=&#34;n&#34;&gt;pieChart&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;apply&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;c1&#34;&gt;//Chart가 그려질때 애니메이션
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;n&#34;&gt;animateY&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1000&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Easing&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;EaseOutCubic&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+
+        &lt;span class=&#34;c1&#34;&gt;//Chart 밑에 description 표시 유무
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;n&#34;&gt;description&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;null&lt;/span&gt;
+
+        &lt;span class=&#34;c1&#34;&gt;//파이 차트 가운데 빈 구멍, 텍스트 설정
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;n&#34;&gt;holeRadius&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;55f&lt;/span&gt; 
+        &lt;span class=&#34;n&#34;&gt;centerText&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;나의 파이차트&amp;#34;&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;setCenterTextSize&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;13f&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+
+        &lt;span class=&#34;c1&#34;&gt;//Legend는 차트의 범례를 의미합니다
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;c1&#34;&gt;//범례가 표시될 위치를 설정
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;n&#34;&gt;legend&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;verticalAlignment&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Legend&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;LegendVerticalAlignment&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;TOP&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;legend&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;horizontalAlignment&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Legend&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;LegendHorizontalAlignment&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;LEFT&lt;/span&gt;
+
+        &lt;span class=&#34;c1&#34;&gt;//label 텍스트 크기, 색
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;n&#34;&gt;setEntryLabelTextSize&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;11f&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;setEntryLabelColor&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Color&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;BLACK&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;1-value에-float이-아닌-원하는-string-설정하기&#34;&gt;1) value에 Float이 아닌 원하는 String 설정하기&lt;/h3&gt;
+&lt;p&gt;기본적으로 &lt;code&gt;PieEntry&lt;/code&gt;의 &lt;code&gt;value&lt;/code&gt; 는 float을 인자로 받습니다. 이를 float값이 아니라 사용자 정의 값을 넣고싶은 경우 &lt;em&gt;(e.g 2f를 2개로 표시)&lt;/em&gt; . &lt;code&gt;PieEntry&lt;/code&gt;의 x값을 파싱하여 &lt;code&gt;valueFormatter&lt;/code&gt;에서 return하면 됩니다.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;    &lt;span class=&#34;c1&#34;&gt;//valueFormatter은 PieDataSet에서 설정하시면 됩니다.
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;n&#34;&gt;valueFormatter&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;object&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ValueFormatter&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(){&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;override&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;fun&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;getFormattedValue&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;value&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Float&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;String&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+            &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;value&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;toInt&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;().&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;toString&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;개&amp;#34;&lt;/span&gt;
+        &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;Reference&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/PhilJay/MPAndroidChart&#34;&gt;https://github.com/PhilJay/MPAndroidChart&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+        </item>
+        <item>
+        <title>Android Studio MPAndroidChart 막대 그래프 사용하기</title>
+        <link>rollinkg.github.io/p/android-studio-mpandroidchart-%EB%A7%89%EB%8C%80-%EA%B7%B8%EB%9E%98%ED%94%84-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/</link>
+        <pubDate>Fri, 03 Jul 2020 00:00:00 +0000</pubDate>
+        
+        <guid>rollinkg.github.io/p/android-studio-mpandroidchart-%EB%A7%89%EB%8C%80-%EA%B7%B8%EB%9E%98%ED%94%84-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/</guid>
+        <description>&lt;img src="/rollinkg.github.io/p/android-studio-mpandroidchart-%EB%A7%89%EB%8C%80-%EA%B7%B8%EB%9E%98%ED%94%84-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/the-creative-exchange-d2zvqp3fpro-unsplash.jpg" alt="Featured image of post Android Studio MPAndroidChart 막대 그래프 사용하기" /&gt;&lt;p&gt;Android UI 오픈소스 &lt;a class=&#34;link&#34; href=&#34;https://github.com/PhilJay/MPAndroidChart&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;MPAndroidChart&lt;/a&gt;는 쉽고 다양한 기능을 제공하는 오픈소스 차트 라이브러리입니다. 선, 막대, 파이, 버블 등 다양한 형태와 애니메이션까지 함께 지원하여 간단하게 안드로이드 앱에 시각적 차트 데이터를 삽입할 수 있습니다.&lt;/p&gt;
+&lt;p&gt;이번 포스트에서는 &lt;strong&gt;Bar Chart(막대 그래프)&lt;/strong&gt; 의 기본적인 사용법을 알아보겠습니다.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;1-import-mpandroidchart&#34;&gt;1. Import MPAndroidChart&lt;/h2&gt;
+&lt;p&gt;다음 &lt;a class=&#34;link&#34; href=&#34;https://github.com/PhilJay/MPAndroidChart&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;MPAndroidChart&lt;/a&gt; 링크에 들어가 최신 버전을 확인하고, Gradle에 다음 의존성을 추가합니다.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;dependencies {
+    ...
+    implementation &amp;#39;com.github.PhilJay:MPAndroidChart:v3.1.0&amp;#39;
+    ...
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;이후 Gradle Sync 해주시면 MPAndroidChart를 사용할 준비는 끝났습니다.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;2-barchart-view-추가&#34;&gt;2. BarChart View 추가&lt;/h2&gt;
+&lt;p&gt;원하는 xml 레이아웃에 &lt;code&gt;com.github.mikephil.charting.charts.BarChart&lt;/code&gt;를 추가하고 배치합니다. &lt;strong&gt;layout_height&lt;/strong&gt; 의 경우 &lt;code&gt;match_parent&lt;/code&gt; 혹은 &lt;code&gt;wrap_content&lt;/code&gt; 로 지정해 줄 경우, 차트가 보이지 않을 수 있습니다. 되도록이면 고정된 값으로 높이를 설정하는 걸 추천드립니다.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span class=&#34;nt&#34;&gt;&amp;lt;com.github.mikephil.charting.charts.BarChart&lt;/span&gt;
+    &lt;span class=&#34;na&#34;&gt;android:id=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;@+id/bar_chart&amp;#34;&lt;/span&gt;
+    &lt;span class=&#34;na&#34;&gt;android:layout_width=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;match_parent&amp;#34;&lt;/span&gt;
+    &lt;span class=&#34;na&#34;&gt;android:layout_height=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;200dp&amp;#34;&lt;/span&gt; &lt;span class=&#34;nt&#34;&gt;/&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id=&#34;3-barchart-코드-작성&#34;&gt;3. BarChart 코드 작성&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;Activity&lt;/code&gt;나 &lt;code&gt;Fragment&lt;/code&gt;에서 코드를 작성하여 차트를 초기화하는 과정입니다. 여러 클래스를 사용하기 때문에 제일 헷갈리는 부분입니다. 다음과 같은 데이터를 작성해야 합니다.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;  &lt;strong&gt;BarEntry&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;  &lt;strong&gt;BarDataSet&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;  &lt;strong&gt;BarData&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;위 순서대로 자세한 용도와 작성법을 설명드리겠습니다.&lt;/p&gt;
+&lt;h3 id=&#34;1-barentry&#34;&gt;1) BarEntry&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;BarEntry&lt;/code&gt;에는 (x, y) 쌍으로 Bar Chart에 표시될 데이터를 저장합니다. 원하는 데이터를 &lt;code&gt;BarEntry&lt;/code&gt;로 만든 뒤, 이를 담는 리스트를 선언하여 추가하면 됩니다. BarEntry에 들어가는 값은 기본적으로 &lt;code&gt;float&lt;/code&gt;입니다. 이를 &lt;code&gt;Int&lt;/code&gt;나 원하는 &lt;code&gt;String&lt;/code&gt;으로 바꾸고 싶은 경우 추후에 &lt;code&gt;label&lt;/code&gt; 을 다는 작업을 거쳐야 합니다.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span class=&#34;c1&#34;&gt;//BarEntry를 담는 리스트
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;val&lt;/span&gt; &lt;span class=&#34;py&#34;&gt;entryList&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;mutableListOf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;BarEntry&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;()&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;//BarEntry로 값 추가 후 리스트에 담는다
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;entryList&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;add&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;BarEntry&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;0f&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1f&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;entryList&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;add&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;BarEntry&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1f&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;5f&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;entryList&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;add&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;BarEntry&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;2f&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;0f&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;2-bardataset&#34;&gt;2) BarDataSet&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;BarDataSet&lt;/code&gt; 은 위에 작성된 &lt;code&gt;BarEntry&lt;/code&gt; 를 바탕으로 실제 &lt;strong&gt;Bar data set&lt;/strong&gt; 를 생성합니다. 단순 데이터인 &lt;code&gt;BarEntry&lt;/code&gt; 를 막대 모양으로 표시하기 위해 반드시 필요하며, 막대의 두께, 색, 테두리 등 다양한 설정을 할 수 있습니다.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;c1&#34;&gt;//위에서 만든 BarEntry 리스트를 인자로 준다
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;val&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;barDataSet&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;BarDataSet&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;entryList&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;MyBarDataSet&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;//example
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;//다음과 같이 Bar 커스터마이징이 가능하다
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;bardataSet&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;color&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ColorTemplate&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;rgb&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;#ff7b22&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;     
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;3-bardata&#34;&gt;3) BarData&lt;/h3&gt;
+&lt;p&gt;마지막으로 &lt;code&gt;BarChart&lt;/code&gt;에 보여질 데이터를 구성합니다. 하나의 &lt;code&gt;BarData&lt;/code&gt;에는 &lt;strong&gt;여러 개&lt;/strong&gt;의 &lt;code&gt;BarDataSet&lt;/code&gt;이 있을 수 있습니다. 한 차트에서 여러 막대 그래프를 함께 보여주기 위한 목적이라고 보시면 됩니다. 또한 여러 개의 &lt;code&gt;BarDataSet&lt;/code&gt;을 효율적으로 보여주기 위한 &lt;code&gt;barWidth&lt;/code&gt;, &lt;code&gt;groubBar&lt;/code&gt;와 같은 변수, 메소드를 제공합니다.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// , 구분으로 여러 BarDataSet을 줄 수 있습니다.
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;val&lt;/span&gt; &lt;span class=&#34;py&#34;&gt;barData&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;BarData&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;barDataSet&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;//example
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;//BarData에 추가된 모든 BarDataSet에 일괄 적용되는 값입니다.
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;barData&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;barWidth&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;0.35f&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;여러 바를 보여주고 싶다면 &lt;code&gt;BarData()&lt;/code&gt; 인자에 쉼표 구분으로 여러 &lt;code&gt;BarDataSet&lt;/code&gt;을 전달하면 됩니다.&lt;/p&gt;
+&lt;h3 id=&#34;4-barchart&#34;&gt;4) BarChart&lt;/h3&gt;
+&lt;p&gt;xml에서 추가한 &lt;code&gt;BarChart&lt;/code&gt;의 객체를 선언하여, 위 과정을 통해 최종적으로 만들어진 &lt;code&gt;BarData&lt;/code&gt;를 건내주면 막대 그래프를 보여주기 위한 설정은 끝입니다. 아래 코드는 &lt;strong&gt;binding&lt;/strong&gt; 객체를 통하여 &lt;code&gt;barChart&lt;/code&gt;에 접근합니다. 사용하는 라이브러리에 따라 &lt;code&gt;findViewById&lt;/code&gt; 혹은 &lt;code&gt;Kotlin Synthetic&lt;/code&gt;을 통해 어떠한 방법으로든 전달하시면됩니다.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span class=&#34;c1&#34;&gt;//binding으로 접근하여 barData 전달
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;val&lt;/span&gt; &lt;span class=&#34;py&#34;&gt;barChart&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;binding&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;barChart&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;barChart&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;data&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;barData&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;//barChart 갱신하여 데이터 표시
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;barChart&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;invalidate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;위 과정을 마치면 성공적으로 차트가 그려진 것을 확인할 수 있다.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;4-barchart-설정-예제&#34;&gt;4. BarChart 설정 예제&lt;/h2&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/PhilJay/MPAndroidChart&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;MPAndroidChart&lt;/a&gt;는 바 색상, 텍스트, 애니메이션, 범례 등 다양한 부분의 커스터마이징이 가능합니다. 그 말인 즉슨, 내가 원하는 방식으로  차트를 보여주려면 꽤 많은 부분을 만져야합니다. 아래 코드는 &lt;code&gt;BarChart&lt;/code&gt;에서 자주 사용되는 설정 예제입니다. 물론 아래 코드보다 훨씬 많은 기능을 제공하므로 모든 기능을 살표보시려면 &lt;a class=&#34;link&#34; href=&#34;https://github.com/PhilJay/MPAndroidChart&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;MPAndroidChart&lt;/a&gt; Github를 방문해보는걸 추천드립니다.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;    &lt;span class=&#34;n&#34;&gt;barChart&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;apply&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;c1&#34;&gt;//터치, Pinch 상호작용
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;n&#34;&gt;setScaleEnabled&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;false&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;setPinchZoom&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;false&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+
+        &lt;span class=&#34;c1&#34;&gt;//Chart가 그려질때 애니메이션
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;n&#34;&gt;animateXY&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;800&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+
+        &lt;span class=&#34;c1&#34;&gt;//Chart 밑에 description 표시 유무
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;n&#34;&gt;description&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;null&lt;/span&gt;
+
+        &lt;span class=&#34;c1&#34;&gt;//Legend는 차트의 범례를 의미합니다
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;c1&#34;&gt;//범례가 표시될 위치를 설정
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;n&#34;&gt;legend&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;verticalAlignment&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Legend&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;LegendVerticalAlignment&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;TOP&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;legend&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;horizontalAlignment&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Legend&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;LegendHorizontalAlignment&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;LEFT&lt;/span&gt;
+
+        &lt;span class=&#34;c1&#34;&gt;//차트의 좌, 우측 최소/최대값을 설정합니다.
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;c1&#34;&gt;//차트 제일 밑이 0부터 시작하고 싶은 경우 설정합니다.
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;n&#34;&gt;axisLeft&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;axisMinimum&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;0f&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;axisRight&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;axisMinimum&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;0f&lt;/span&gt;
+
+        &lt;span class=&#34;c1&#34;&gt;//기본적으로 차트 우측 축에도 데이터가 표시됩니다
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;c1&#34;&gt;//이를 활성화/비활성화 하기 위함
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;n&#34;&gt;axisRight&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;setDrawLabels&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;false&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+
+        &lt;span class=&#34;c1&#34;&gt;//xAxis, yAxis 둘다 존재하여 따로 설정이 가능합니다
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;c1&#34;&gt;//차트 내부에 Grid 표시 유무
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;n&#34;&gt;xAxis&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;setDrawGridLines&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;false&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+
+        &lt;span class=&#34;c1&#34;&gt;//x축 데이터 표시 위치
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;n&#34;&gt;xAxis&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;position&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;XAxis&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;XAxisPosition&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;BOTTOM&lt;/span&gt;
+
+        &lt;span class=&#34;c1&#34;&gt;//x축 데이터 갯수 설정
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;n&#34;&gt;xAxis&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;labelCount&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;entry&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;size&lt;/span&gt; 
+
+    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;1-x축에-float이-아닌-원하는-string-설정하기&#34;&gt;1) X축에 Float이 아닌 원하는 String 설정하기&lt;/h3&gt;
+&lt;p&gt;기본적으로 &lt;code&gt;BarEntry&lt;/code&gt; 는 float을 인자로 받습니다. 이를 float값이 아니라 사용자 정의 값을 넣고싶은 경우 &lt;em&gt;(e.g 월, 화, 수, 목, 금..)&lt;/em&gt; . &lt;code&gt;BarEntry&lt;/code&gt;의 x값을 &lt;code&gt;0.0&lt;/code&gt; , &lt;code&gt;1.0&lt;/code&gt; 과 같이 추후에 &lt;code&gt;Int&lt;/code&gt;로 파싱하여 index로 활용할 수 있도록 줍니다. 그리고 다음과 같이 원하는 &lt;code&gt;label&lt;/code&gt;를 정의합니다.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span class=&#34;k&#34;&gt;val&lt;/span&gt; &lt;span class=&#34;py&#34;&gt;labels&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;arrayof&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;월&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;화&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;수&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;그리고 &lt;code&gt;BarChart&lt;/code&gt;에서 &lt;code&gt;valueFormatter&lt;/code&gt;로 x값을 label에 매칭시켜주면 됩니다.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span class=&#34;n&#34;&gt;barChart&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;xAxis&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;valueFormatter&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;object&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ValueFormatter&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+            &lt;span class=&#34;k&#34;&gt;override&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;fun&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;getFormattedValue&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;value&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Float&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;String&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+                &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;labels&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;value&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;toInt&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()]&lt;/span&gt;
+            &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+        &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;위 코드의 &lt;code&gt;return&lt;/code&gt; 부분을 수정하여 비단 &lt;code&gt;String&lt;/code&gt;뿐만이 아닌 다양하게 x축의 &lt;code&gt;label&lt;/code&gt;을 설정할 수 있습니다.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;Reference&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/PhilJay/MPAndroidChart&#34;&gt;https://github.com/PhilJay/MPAndroidChart&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+        </item>
+        <item>
+        <title>Android SQLite 추상화 라이브러리 Room 사용하기</title>
+        <link>rollinkg.github.io/p/android-sqlite-%EC%B6%94%EC%83%81%ED%99%94-%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC-room-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/</link>
+        <pubDate>Wed, 17 Jun 2020 00:00:00 +0000</pubDate>
+        
+        <guid>rollinkg.github.io/p/android-sqlite-%EC%B6%94%EC%83%81%ED%99%94-%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC-room-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/</guid>
+        <description>&lt;img src="/rollinkg.github.io/p/android-sqlite-%EC%B6%94%EC%83%81%ED%99%94-%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC-room-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/luca-bravo-alS7ewQ41M8-unsplash.jpg" alt="Featured image of post Android SQLite 추상화 라이브러리 Room 사용하기" /&gt;&lt;p&gt;&lt;strong&gt;Room&lt;/strong&gt;은 SQLite에 대한 추상화 레이어를 제공하여 로컬 데이터베이스 사용을 원할하게 합니다. Android는 SQLite 대신 Room을 사용할 것을 &lt;strong&gt;적극적으로 권장&lt;/strong&gt; 하며, Room을 사용하여 상당한 양의 앱 데이터를 구조화된 형태로 로컬에 저장할 수 있습니다.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;1-room-import&#34;&gt;1. Room Import&lt;/h2&gt;
+&lt;p&gt;앱 단위 Gradle 최상단에 &lt;code&gt;kapt&lt;/code&gt; 플러그인을 적용합니다. kapt란 &lt;code&gt;Kotlin Annotation Processing Tool&lt;/code&gt;의 줄임말로, 코틀린 환경에서 &lt;code&gt;annotation&lt;/code&gt; 코드 블럭을 컴파일 하기 위하여 필요합니다.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;apply plugin: &lt;span class=&#34;s1&#34;&gt;&amp;#39;kotlin-kapt&amp;#39;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;다음으로 &lt;code&gt;Room&lt;/code&gt; 라이브러리 의존성을 추가하고 &lt;code&gt;Graadle Sync&lt;/code&gt;하여 프로젝트에 동기화 합니다.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;dependencies&lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+    ...
+    implementation &lt;span class=&#34;s1&#34;&gt;&amp;#39;androidx.room:room-runtime:2.2.5&amp;#39;&lt;/span&gt;
+    kapt &lt;span class=&#34;s1&#34;&gt;&amp;#39;androidx.room:room-compiler:2.2.5&amp;#39;&lt;/span&gt;
+
+    // optional - Kotlin Extensions and Coroutines support &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; Room
+    implementation &lt;span class=&#34;s2&#34;&gt;&amp;#34;androidx.room:room-ktx:2.2.5&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id=&#34;2-room-클래스-정의&#34;&gt;2. Room 클래스 정의&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Room&lt;/strong&gt;은 기본적으로 &lt;strong&gt;테이블&lt;/strong&gt; 형식으로 데이터를 관리하며, 사용하기 위해선 다음 3가지 구성요소를 작성해야합니다. 자세한 내용은 아래 항목에 예제 코드와 함께 작성하였습니다.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Data Entity&lt;/strong&gt;: data class로 작성하며, DB의 스키마, 테이블을 정의&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;DAO&lt;/strong&gt;: DB에 엑세스 하는 메소드가 포함&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Database&lt;/strong&gt;: DB의 기본 엑세스 포인트&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;1-data-entity&#34;&gt;1) Data Entity&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;User.kt&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span class=&#34;nd&#34;&gt;@Entity&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;data&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;User&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;
+        &lt;span class=&#34;nd&#34;&gt;@PrimaryKey&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;val&lt;/span&gt; &lt;span class=&#34;py&#34;&gt;uid&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Int&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+        &lt;span class=&#34;nd&#34;&gt;@ColumnInfo&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;name&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;first_name&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;val&lt;/span&gt; &lt;span class=&#34;py&#34;&gt;firstName&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;?,&lt;/span&gt;
+        &lt;span class=&#34;nd&#34;&gt;@ColumnInfo&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;name&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;last_name&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;val&lt;/span&gt; &lt;span class=&#34;py&#34;&gt;lastName&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;?&lt;/span&gt;
+    &lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;첫번째로 Data Entity입니다. 원하는 &lt;code&gt;data Class&lt;/code&gt;를 &lt;code&gt;@Entity&lt;/code&gt; 어노테이션으로 감싸 작성합니다. 내부에는 기존 data class 사용과 동일하게 원하는 데이터와 타입을 명시해주면 됩니다. 이때 반드시 &lt;code&gt;@PrimaryKey&lt;/code&gt;를 통해 테이블의 키를 명시해주어야 합니다.&lt;/p&gt;
+&lt;p&gt;또한 Primary Key를 자동으로 증가하는 인덱스로 하고 싶은 경우가 있을 수 있습니다. 이런 경우엔 아래 코드와 같이 &lt;code&gt;autoGenerate = true&lt;/code&gt;를 주시고 후에 값으로 &lt;code&gt;0 or null&lt;/code&gt;을 주시면 자동으로 인덱스가 생성되어 저장됩니다.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span class=&#34;nd&#34;&gt;@PrimaryKey&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;autoGenerate&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;val&lt;/span&gt; &lt;span class=&#34;py&#34;&gt;uid&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Int&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;2-dao&#34;&gt;2) DAO&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;UserDao.kt&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span class=&#34;nd&#34;&gt;@Dao&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;interface&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;UserDao&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;nd&#34;&gt;@Query&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;SELECT * FROM user&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;fun&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;getAll&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;():&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;List&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;User&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;
+
+        &lt;span class=&#34;nd&#34;&gt;@Query&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;SELECT * FROM user WHERE uid IN (:userIds)&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;fun&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;loadAllByIds&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;userIds&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;IntArray&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;List&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;User&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;
+
+        &lt;span class=&#34;nd&#34;&gt;@Query&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;SELECT * FROM user WHERE first_name LIKE :first AND &amp;#34;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;+&lt;/span&gt;
+               &lt;span class=&#34;s2&#34;&gt;&amp;#34;last_name LIKE :last LIMIT 1&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;fun&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;findByName&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;first&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;last&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;User&lt;/span&gt;
+
+        &lt;span class=&#34;nd&#34;&gt;@Insert&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;fun&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;insertAll&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;vararg&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;users&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;User&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+
+        &lt;span class=&#34;nd&#34;&gt;@Delete&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;fun&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;delete&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;user&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;User&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;다음은 DAO로 내부에 DB에 사용할 쿼리를 메소드로 정의합니다. &lt;code&gt;interface&lt;/code&gt;로 작성하며 &lt;code&gt;@Dao&lt;/code&gt; 어노테이션으로 감싸 작성합니다. &lt;code&gt;@Insert&lt;/code&gt;, &lt;code&gt;@Delete&lt;/code&gt; 와 같은 기본적인 쿼리는 기본적으로 제공되며, 그 외의 복잡한 쿼리는 직접 &lt;code&gt;@Query&lt;/code&gt; 어노테이션 내부에 작성하고 쿼리를 호출할 메소드를 지정해주어야 합니다. 위 코드는 다양한 DAO 쿼리/메소드 예제입니다. 원하는 값을 전달하여 필터링하는 쿼리를 던지고 싶은경우, 메소드에 파라미터를 지정하고 &lt;code&gt;@Query&lt;/code&gt;내부에서 &lt;code&gt;:&lt;/code&gt; prefix를 통해 파라미터를 참조할 수 있습니다.&lt;/p&gt;
+&lt;h3 id=&#34;3-database&#34;&gt;3) Database&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;UserDatabase.kt&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span class=&#34;nd&#34;&gt;@Database&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;entities&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;User&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;class&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;],&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;version&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;exportSchema&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;false&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;abstract&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;AppDatabase&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;RoomDatabase&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;abstract&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;fun&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;userDao&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;():&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;UserDao&lt;/span&gt;
+
+        &lt;span class=&#34;k&#34;&gt;companion&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;object&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;private&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;var&lt;/span&gt; &lt;span class=&#34;py&#34;&gt;instance&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;UserDatabase&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;?&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;null&lt;/span&gt;
+
+        &lt;span class=&#34;nd&#34;&gt;@Synchronized&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;fun&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;getInstance&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;context&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Context&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;UserDatabase&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;?&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+            &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;instance&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;null&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;){&lt;/span&gt;
+                &lt;span class=&#34;n&#34;&gt;instance&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Room&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;databaseBuilder&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;context&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;applicationContext&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;UserDatabase&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;class&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;java&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;database_name&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+                    &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;fallbackToDestructiveMigration&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+                    &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;allowMainThreadQueries&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+                    &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;build&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+            &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+
+            &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;instance&lt;/span&gt;
+        &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;마지막으로 Database를 생성하고 접근하는 객체입니다. &lt;code&gt;RoomDatabase&lt;/code&gt;를 상속하며 &lt;code&gt;@Database&lt;/code&gt; 어노테이션으로 감싸 작성합니다. 어노테이션에는 Entity로 사용할 클래스와, DB 버전 등을 명시합니다. 그리고 내부에는 위에 작성한 UserDao를 선언하여 후에 DAO에 접근하여 작성한 메소드를 호출하는 방식을 사용합니다.&lt;/p&gt;
+&lt;p&gt;또한 어플리케이션 전체에서 DB에 접근하는 객체는 둘 이상 필요하지 않으므로 내부에 &lt;code&gt;companion object&lt;/code&gt;와 &lt;code&gt;Synchronized&lt;/code&gt; 키워드를 이용하여 database를 &lt;code&gt;Singletone&lt;/code&gt;으로 사용합니다.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;3-작성한-room-database-사용&#34;&gt;3. 작성한 Room Database 사용&lt;/h2&gt;
+&lt;p&gt;위 과정을 모두 마쳤다면 이제 Room Database를 사용할 준비는 끝났습니다. 원하는 진입점에서 아래 코드를 이용하여 DB, DAO에 접근하면 됩니다.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span class=&#34;k&#34;&gt;val&lt;/span&gt; &lt;span class=&#34;py&#34;&gt;database&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;UserDatabase&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;getInstance&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;application&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;!!&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;val&lt;/span&gt; &lt;span class=&#34;py&#34;&gt;userDao&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;database&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;userDao&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+
+&lt;span class=&#34;k&#34;&gt;val&lt;/span&gt; &lt;span class=&#34;py&#34;&gt;data&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;userDao&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;getAll&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;DB에 접근하는 행위를 &lt;code&gt;MainThread&lt;/code&gt;에서 돌린다면 오랫동안 UI를 잠글 수 있으므로 권장하지 않습니다. 따라서 &lt;code&gt;Corourtine&lt;/code&gt;이나 &lt;code&gt;RxJava&lt;/code&gt;를 활용한 방식을 추천합니다. 또한 &lt;code&gt;LiveData&lt;/code&gt;를 이용하여 DB가 갱신되면 앱 UI가 자동으로 업데이트 되도록 구성할 수 있습니다. 이는 추후 포스트로 작성하겠습니다.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;Reference&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://developer.android.com/training/data-storage/room?hl=ko&#34;&gt;https://developer.android.com/training/data-storage/room?hl=ko&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+        </item>
+        <item>
+        <title>Android Studio Databinding으로 MVVM 패턴 적용하기</title>
+        <link>rollinkg.github.io/p/android-studio-databinding%EC%9C%BC%EB%A1%9C-mvvm-%ED%8C%A8%ED%84%B4-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/</link>
+        <pubDate>Thu, 12 Mar 2020 00:00:00 +0000</pubDate>
+        
+        <guid>rollinkg.github.io/p/android-studio-databinding%EC%9C%BC%EB%A1%9C-mvvm-%ED%8C%A8%ED%84%B4-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/</guid>
+        <description>&lt;img src="/rollinkg.github.io/p/android-studio-databinding%EC%9C%BC%EB%A1%9C-mvvm-%ED%8C%A8%ED%84%B4-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/pawel-czerwinski-8uZPynIu-rQ-unsplash.jpg" alt="Featured image of post Android Studio Databinding으로 MVVM 패턴 적용하기" /&gt;&lt;p&gt;&lt;strong&gt;MVVM&lt;/strong&gt; 패턴이란, 기존의 MVP패턴에서 &lt;code&gt;View&lt;/code&gt;와 &lt;code&gt;Presenter&lt;/code&gt;가 가지는 의존성을 없애기 위한 고안된 방식입니다. Presentation 로직은 똑같이 &lt;code&gt;ViewModel&lt;/code&gt;에서 이루어지지만, 다른 점은 &lt;code&gt;ViewModel&lt;/code&gt;은 &lt;code&gt;View&lt;/code&gt;의 존재를 모릅니다. 기존의 &lt;code&gt;Presenter&lt;/code&gt;은 관련 로직을 처리하고 UI를 갱신하는 메소드를 인터페이스로 작성하여 &lt;code&gt;View&lt;/code&gt;에 넘겨주어야 했지만, MVVM 패턴에서는 이런 과정이 없어진것이죠. 그 대신 &lt;code&gt;View&lt;/code&gt;에서는 갱신되어야 하는 UI가 &lt;strong&gt;Databinding&lt;/strong&gt;으로 &lt;code&gt;ViewModel&lt;/code&gt;의 값에 바인드되어 있습니다. 따라서 &lt;code&gt;ViewModel&lt;/code&gt;에서의 값이 바뀌면 &lt;code&gt;View&lt;/code&gt;의 UI 요소가 자동으로 갱신됩니다. 이런 방식으로 &lt;code&gt;View&lt;/code&gt;와 &lt;code&gt;ViewModel&lt;/code&gt;의 의존성을 없애고 Android MVVM 패턴을 구현할 수 있습니다.&lt;/p&gt;
+&lt;p&gt;&lt;figure style=&#34;flex-grow: 436; flex-basis: 1047px&#34;&gt;
+		&lt;a href=&#34;rollinkg.github.io/rollinkg.github.io/p/android-studio-databinding%EC%9C%BC%EB%A1%9C-mvvm-%ED%8C%A8%ED%84%B4-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/mvvm.png&#34; data-size=&#34;624x143&#34;&gt;&lt;img src=&#34;rollinkg.github.io/rollinkg.github.io/p/android-studio-databinding%EC%9C%BC%EB%A1%9C-mvvm-%ED%8C%A8%ED%84%B4-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/mvvm.png&#34;
+				srcset=&#34;rollinkg.github.io/rollinkg.github.io/p/android-studio-databinding%EC%9C%BC%EB%A1%9C-mvvm-%ED%8C%A8%ED%84%B4-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/mvvm_hu8b8f5b21f058152f16df4a9f22499b26_22297_480x0_resize_box_2.png 480w, rollinkg.github.io/rollinkg.github.io/p/android-studio-databinding%EC%9C%BC%EB%A1%9C-mvvm-%ED%8C%A8%ED%84%B4-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/mvvm_hu8b8f5b21f058152f16df4a9f22499b26_22297_1024x0_resize_box_2.png 1024w&#34;
+				width=&#34;624&#34;
+				height=&#34;143&#34;
+				loading=&#34;lazy&#34;
+				&gt;
+		&lt;/a&gt;
+		
+	&lt;/figure&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;1-viewmodel&#34;&gt;1. ViewModel&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;MVVM&lt;/strong&gt; 패턴을 적용하기전에, &lt;code&gt;ViewModel&lt;/code&gt;에 대한 이해가 필요합니다. 지금 적용하려는 &lt;strong&gt;MVVM 패턴의 ViewModel&lt;/strong&gt;과, &lt;strong&gt;AAC의 ViewModel&lt;/strong&gt;은 엄연히 다른 개념이기 때문입니다. 구글 공식 문서에는 ViewModel을 다음과 같이 설명하고 있습니다.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;ViewModel 클래스는 수명 주기를 고려하여 UI 관련 데이터를 저장하고 관리하도록 설계되었습니다. ViewModel 클래스를 사용하면 화면 회전과 같이 구성을 변경할 때도 데이터를 유지할 수 있습니다.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;제가 위에서 설명한 MVVM의 ViewModel과는 좀 다른 개념이죠? &lt;strong&gt;AAC의 ViewModel&lt;/strong&gt;이란, 화면을 회전하는 등의 동작에서 &lt;code&gt;LifeCycle&lt;/code&gt;에 의하여 &lt;code&gt;View&lt;/code&gt;에 작성되어있는 데이터의 소멸, 메모리 누수등의 문제로 &lt;strong&gt;UI를 다루는 로직에서 View의 데이터 소유권을 분리&lt;/strong&gt;하는 방식입니다. View는 생명주기에 의하여 쉽게 데이터가 바뀌므로, 다양한 환경에서도 일관된 데이터를 유지하겠다는 목적이죠.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;근데 왜 구분을 안하고 사용할까?&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;많은 MVVM 예제나, 심지어 안드로이드 공식 문서에서도 &lt;strong&gt;AAC ViewModel&lt;/strong&gt;과 &lt;strong&gt;MVVM ViewModel&lt;/strong&gt;을 크게 구분하여 사용하지 않습니다. 왜냐면 &lt;code&gt;ViewModel&lt;/code&gt; 클래스가 두 개의 역할을 다 하고있기 때문입니다. 자연스럽게 MVVM 패턴의 ViewModel에 AAC ViewModel의 기능도 함께 사용하고 있는것이죠. 아래 내용도 둘을 크게 구분하지 않고 코드 예제로 MVVM 패턴을 적용하는 법을  작성할 것입니다. 또한 추후에 앱의 아키텍처를 설계할 일이 생겼을 때, 위 개념을 자세히 알아두는 것이 클린 아키텍처 설계에 분명 도움이 될 것입니다.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;2-viewmodel-클래스-작성하기&#34;&gt;2. ViewModel 클래스 작성하기&lt;/h2&gt;
+&lt;p&gt;MVVM에서 View의 역할은 &lt;code&gt;Activity&lt;/code&gt;, &lt;code&gt;Fragment&lt;/code&gt; 가 하고 있으니 핵심적인 &lt;code&gt;ViewModel&lt;/code&gt; 클래스를 작성합니다. 필수적으로 LifeCycle 라이브러리의 &lt;code&gt;ViewModel()&lt;/code&gt;을 상속하며, 추후 데이터 바인딩을 위해 필요한 변수는 &lt;code&gt;LiveData&lt;/code&gt;로 선언합니다. LiveData의 개념과 사용법은 &lt;a class=&#34;link&#34; href=&#34;https://rollinkg.github.io/blog/android_livedata/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;여기&lt;/a&gt;에 작성되어있습니다.&lt;/p&gt;
+&lt;p&gt;MyViewModel.kt
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span class=&#34;k&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;MyViewModel&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ViewModel&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+  &lt;span class=&#34;o&#34;&gt;..&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;
+  &lt;span class=&#34;k&#34;&gt;val&lt;/span&gt; &lt;span class=&#34;py&#34;&gt;myText&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;MutableLiveData&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;()&lt;/span&gt;
+  &lt;span class=&#34;o&#34;&gt;..&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;3-databinding-으로-viewmodel과-ui-바인딩&#34;&gt;3. Databinding 으로 ViewModel과 UI 바인딩&lt;/h2&gt;
+&lt;h3 id=&#34;1-프로젝트에-databinding-사용&#34;&gt;1) 프로젝트에 Databinding 사용&lt;/h3&gt;
+&lt;p&gt;app단위 &lt;code&gt;Gradle&lt;/code&gt;에 다음 설정을 추가합니다.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;android &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+    ...
+
+    buildFeatures&lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;nv&#34;&gt;dataBinding&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;true&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+
+    ...
+&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;2-databinding-layout으로-변환&#34;&gt;2) Databinding Layout으로 변환&lt;/h3&gt;
+&lt;p&gt;databinding을 적용할 layout xml 루트에 &lt;code&gt;ALT+ENTER&lt;/code&gt;를 눌러 &lt;code&gt;convert to databinding layout&lt;/code&gt;을 클릭합니다.&lt;/p&gt;
+&lt;p&gt;&lt;figure style=&#34;flex-grow: 280; flex-basis: 672px&#34;&gt;
+		&lt;a href=&#34;rollinkg.github.io/rollinkg.github.io/p/android-studio-databinding%EC%9C%BC%EB%A1%9C-mvvm-%ED%8C%A8%ED%84%B4-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/databinding_convert.png&#34; data-size=&#34;454x162&#34;&gt;&lt;img src=&#34;rollinkg.github.io/rollinkg.github.io/p/android-studio-databinding%EC%9C%BC%EB%A1%9C-mvvm-%ED%8C%A8%ED%84%B4-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/databinding_convert.png&#34;
+				srcset=&#34;rollinkg.github.io/rollinkg.github.io/p/android-studio-databinding%EC%9C%BC%EB%A1%9C-mvvm-%ED%8C%A8%ED%84%B4-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/databinding_convert_hu10b2164bd374cb0db588173c34532936_9116_480x0_resize_box_2.png 480w, rollinkg.github.io/rollinkg.github.io/p/android-studio-databinding%EC%9C%BC%EB%A1%9C-mvvm-%ED%8C%A8%ED%84%B4-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/databinding_convert_hu10b2164bd374cb0db588173c34532936_9116_1024x0_resize_box_2.png 1024w&#34;
+				width=&#34;454&#34;
+				height=&#34;162&#34;
+				loading=&#34;lazy&#34;
+				&gt;
+		&lt;/a&gt;
+		
+	&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;그럼 layout xml이 다음과 같이 변환됩니다. 기존 View와 추후에 추가할 View들은 &lt;code&gt;&amp;lt;layout&amp;gt;&lt;/code&gt; 내부로 들어간 루트 뷰에 작성하면 됩니다.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span class=&#34;cp&#34;&gt;&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;utf-8&amp;#34;?&amp;gt;&lt;/span&gt;
+&lt;span class=&#34;nt&#34;&gt;&amp;lt;layout&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;xmlns:android=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;http://schemas.android.com/apk/res/android&amp;#34;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;data&amp;gt;&lt;/span&gt;
+
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;/data&amp;gt;&lt;/span&gt;
+    
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;androidx.constraintlayout.widget.ConstraintLayout&amp;gt;&lt;/span&gt;
+      ...
+      
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;/androidx.constraintlayout.widget.ConstraintLayout&amp;gt;&lt;/span&gt;
+&lt;span class=&#34;nt&#34;&gt;&amp;lt;/layout&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;3-databinding-data-선언&#34;&gt;3) Databinding data 선언&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;&amp;lt;data&amp;gt;&lt;/code&gt; 태그 내부에 사용하고 싶은 data를 변수처럼 선언할 수 있습니다. 이번 포스트에서는 ViewModel의 값과 바인딩을 할 것이기 때문에 &lt;code&gt;ViewModel&lt;/code&gt;을 작성하도록 하겠습니다. &lt;code&gt;&amp;lt;variable&amp;gt;&lt;/code&gt;태그 내부에 변수 이름과 타입을 다음과 같이 명시합니다.
+&lt;code&gt;&amp;lt;type&amp;gt;&lt;/code&gt;의 경우 프로젝트 패키지명을 포함하여 클래스 명까지 적어주어야 합니다.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span class=&#34;cp&#34;&gt;&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;utf-8&amp;#34;?&amp;gt;&lt;/span&gt;
+&lt;span class=&#34;nt&#34;&gt;&amp;lt;layout&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;xmlns:android=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;http://schemas.android.com/apk/res/android&amp;#34;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;data&amp;gt;&lt;/span&gt;
+        &lt;span class=&#34;nt&#34;&gt;&amp;lt;variable&lt;/span&gt;
+            &lt;span class=&#34;na&#34;&gt;name=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;vm&amp;#34;&lt;/span&gt;
+            &lt;span class=&#34;na&#34;&gt;type=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;com.example.project.MyViewModel&amp;#34;&lt;/span&gt; &lt;span class=&#34;nt&#34;&gt;/&amp;gt;&lt;/span&gt;
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;/data&amp;gt;&lt;/span&gt;
+
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;androidx.constraintlayout.widget.ConstraintLayout&amp;gt;&lt;/span&gt;
+      ...
+      
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;/androidx.constraintlayout.widget.ConstraintLayout&amp;gt;&lt;/span&gt;
+
+&lt;span class=&#34;nt&#34;&gt;&amp;lt;/layout&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;4-원하는-ui-요소-바인딩&#34;&gt;4) 원하는 UI 요소 바인딩&lt;/h3&gt;
+&lt;p&gt;다음으로 원하는 UI와 ViewModel의 값을 바인딩합니다. &lt;code&gt;@{}&lt;/code&gt; 내부에 &lt;code&gt;&amp;lt;data&amp;gt;&lt;/code&gt;에 선언해두었던 변수 명으로 접근이 가능합니다. 아래 코드는 &lt;code&gt;TextView&lt;/code&gt;를 &lt;strong&gt;MyViewModel.kt&lt;/strong&gt; 에 선언되어있는 LiveData인 myText와 바인딩하는 예제입니다.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;...
+&lt;span class=&#34;nt&#34;&gt;&amp;lt;Textview&amp;gt;&lt;/span&gt;
+  android:width=&amp;#34;wrap_content&amp;#34;
+  andriod:height=&amp;#34;wrap_content&amp;#34;
+  andriod:text=&amp;#34;@{vm.myText}&amp;#34;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id=&#34;3-view에서-databinding-설정&#34;&gt;3. View에서 Databinding 설정&lt;/h2&gt;
+&lt;p&gt;위 과정을 마쳤다면, &lt;code&gt;View&lt;/code&gt;단에서 databinding 설정을 해주어야합니다. layout xml을 databing으로 변환했다면, 자동으로 databinding 클래스가 생성됩니다. 이를 이용하여 View에서 layout을 inflate하고 내부 view 객체에 접근합니다. 이때 생성되는 databinding 클래스는 xml 파일명을 카멜 표기법으로 변환한 이름으로 생성됩니다.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;1-binding-객체-선언&#34;&gt;1) binding 객체 선언&lt;/h3&gt;
+&lt;p&gt;아래 코드와 같이 &lt;code&gt;lateinit&lt;/code&gt; 태그로 바인딩 객체를 생성합니다&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span class=&#34;k&#34;&gt;lateinit&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;var&lt;/span&gt; &lt;span class=&#34;py&#34;&gt;binding&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ActivityMainBinding&lt;/span&gt;
+
+&lt;span class=&#34;k&#34;&gt;override&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;fun&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;onCreate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;savedInstanceState&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Bundle&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;?)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+  &lt;span class=&#34;o&#34;&gt;..&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;
+
+&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;2-databindingutil로-레이아웃-inflate&#34;&gt;2) DatabindingUtil로 레이아웃 inflate&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;setContentView&lt;/code&gt;를 다음 예제와 같이 변경하여 호출합니다.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span class=&#34;k&#34;&gt;lateinit&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;var&lt;/span&gt; &lt;span class=&#34;py&#34;&gt;binding&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ActivityMainBinding&lt;/span&gt;
+
+&lt;span class=&#34;k&#34;&gt;override&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;fun&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;onCreate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;savedInstanceState&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Bundle&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;?)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+  &lt;span class=&#34;o&#34;&gt;..&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;
+
+  &lt;span class=&#34;n&#34;&gt;binding&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;DataBindingUtil&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;setContentView&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;R&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;layout&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;activity_main&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+
+&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;3-viewmodel-생성&#34;&gt;3) ViewModel 생성&lt;/h3&gt;
+&lt;p&gt;마지막으로 View에서 &lt;code&gt;ViewModel&lt;/code&gt; 객체를 생성합니다. 중요한점은 &lt;code&gt;ViewModel&lt;/code&gt;은 일반 객체처럼 생성하면 안됩니다. 위 &lt;code&gt;ViewModel&lt;/code&gt;의 개념에서 설명한 것처럼, 일반 객체처럼 생성할 경우 화면 전환에 따라 여러개의 ViewModel이 생성되거나 메모리 누수등의 문제가 발생할 수 있습니다. 따라서 &lt;code&gt;ViewModelProvider&lt;/code&gt;를 통해 생성하거나 &lt;code&gt;koin&lt;/code&gt; 내부 라이브러리 등 뷰모델 주입 메소드를 통해 생성하는 것을 권장합니다.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;MainActivity.kt&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;
+&lt;span class=&#34;k&#34;&gt;private&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;lateinit&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;var&lt;/span&gt; &lt;span class=&#34;py&#34;&gt;viewModel&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;MyViewModel&lt;/span&gt;
+
+&lt;span class=&#34;k&#34;&gt;override&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;fun&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;onCreate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;savedInstanceState&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Bundle&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;?)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+  &lt;span class=&#34;o&#34;&gt;..&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;viewModel&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ViewModelProvider&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ViewModelProvider&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;NewInstanceFactory&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()).&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;get&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;MyViewModel&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;class&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;java&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+  &lt;span class=&#34;o&#34;&gt;..&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;4-xml-data로-viewmodel-전달&#34;&gt;4) XML data로 ViewModel 전달&lt;/h3&gt;
+&lt;p&gt;마지막으로 xml에 &lt;code&gt;&amp;lt;data&amp;gt;&lt;/code&gt;태그로 선언했던 vm 값에 실제 ViewModel을 넘겨주어야 합니다. xml 내부 &lt;code&gt;&amp;lt;data&amp;gt;&lt;/code&gt;,  &lt;code&gt;&amp;lt;view&amp;gt;&lt;/code&gt; 는 binding 객체로 접근할 수 있습니다.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span class=&#34;n&#34;&gt;binding&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;vm&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;viewModel&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;5-lifecycler-owner-전달&#34;&gt;5) Lifecycler Owner 전달&lt;/h3&gt;
+&lt;p&gt;마지막으로 &lt;code&gt;LifeCyleOwner&lt;/code&gt;를 전달합니다. ViewModel 내부 &lt;code&gt;LiveData&lt;/code&gt;는 LifeCycler에 의존적이기 때문에 &lt;code&gt;LifeCycleOwner&lt;/code&gt;를 전달하지 않으면 실시간 UI 갱신이 일어나지 않습니다.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span class=&#34;c1&#34;&gt;//Activity
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;binding&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;lifecycleOwner&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;nd&#34;&gt;@MainActivity&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;//Fragment
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;binding&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;lifecycleOwner&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;viewLifecycleOwner&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id=&#34;4-마무리&#34;&gt;4. 마무리&lt;/h2&gt;
+&lt;p&gt;위 작업을 모두 마쳤으면 &lt;strong&gt;MVVM + Databinding&lt;/strong&gt; 사용 준비는 끝났습니다. ViewModel에서 bind된 &lt;code&gt;LiveData&lt;/code&gt;의 &lt;code&gt;value&lt;/code&gt;가 변할 경우, &lt;code&gt;textView&lt;/code&gt;가 자동으로 갱신되는 것을 확인 할 수 있습니다.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;Reference&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://developer.android.com/topic/libraries/architecture/viewmodel?hl=ko&#34;&gt;https://developer.android.com/topic/libraries/architecture/viewmodel?hl=ko&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

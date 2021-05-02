@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="ko-kr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Android Studio / Kotlin'><title>Android Studio Databinding으로 MVVM 패턴 적용하기</title>
+
+<link rel='canonical' href='rollinkg.github.io/p/android-studio-databinding%EC%9C%BC%EB%A1%9C-mvvm-%ED%8C%A8%ED%84%B4-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/'>
+
+<link rel="stylesheet" href="/rollinkg.github.io/scss/style.min.css"><meta property='og:title' content='Android Studio Databinding으로 MVVM 패턴 적용하기'>
+<meta property='og:description' content='Android Studio / Kotlin'>
+<meta property='og:url' content='rollinkg.github.io/p/android-studio-databinding%EC%9C%BC%EB%A1%9C-mvvm-%ED%8C%A8%ED%84%B4-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/'>
+<meta property='og:site_name' content='RollinKG&#39;s Devlog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='android' /><meta property='article:tag' content='kotlin' /><meta property='article:published_time' content='2020-03-12T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2020-03-12T00:00:00&#43;00:00'/><meta property='og:image' content='/rollinkg.github.io/p/android-studio-databinding%EC%9C%BC%EB%A1%9C-mvvm-%ED%8C%A8%ED%84%B4-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/pawel-czerwinski-8uZPynIu-rQ-unsplash.jpg' />
+<meta name="twitter:title" content="Android Studio Databinding으로 MVVM 패턴 적용하기">
+<meta name="twitter:description" content="Android Studio / Kotlin"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='/rollinkg.github.io/p/android-studio-databinding%EC%9C%BC%EB%A1%9C-mvvm-%ED%8C%A8%ED%84%B4-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/pawel-czerwinski-8uZPynIu-rQ-unsplash.jpg' />
+    </head>
+    <body class="">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.body.dataset.scheme = 'dark';
+        } else {
+            document.body.dataset.scheme = 'light';
+        }
+    })();
+</script><div class="container main-container flex on-phone--column extended article-page with-toolbar">
+            <aside class="sidebar left-sidebar sticky">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header class="site-info">
+        
+            <figure class="site-avatar">
+                
+                    
+                    
+                    
+                        
+                        <img src="/rollinkg.github.io/img/profile_huce2dcc4fcfe67e6028e5b5acfcccf454_11052776_300x0_resize_box_2.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+
+                
+                    <span class="emoji">🧗🏻</span>
+                
+            </figure>
+        
+        <h1 class="site-name"><a href="rollinkg.github.io">RollinKG&#39;s Devlog</a></h1>
+        <h2 class="site-description">벽타는 개발자 Android/Flutter</h2>
+    </header>
+
+    <ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='rollinkg.github.io/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='rollinkg.github.io/about-rollinkg/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About RollinKG</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='rollinkg.github.io/archives/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='rollinkg.github.io/search/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+
+        
+            <li id="dark-mode-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <span>Dark Mode</span>
+            </li>
+        
+    </ol>
+</aside>
+
+            <main class="main full-width">
+    <div id="article-toolbar">
+        <a href="rollinkg.github.io" class="back-home">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+            <span>Back</span>
+        </a>
+    </div>
+
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="rollinkg.github.io/p/android-studio-databinding%EC%9C%BC%EB%A1%9C-mvvm-%ED%8C%A8%ED%84%B4-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/">
+                <img src="/rollinkg.github.io/p/android-studio-databinding%EC%9C%BC%EB%A1%9C-mvvm-%ED%8C%A8%ED%84%B4-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/pawel-czerwinski-8uZPynIu-rQ-unsplash_hud7e36f7e20e71be184458283bdae4646_55974_800x0_resize_q75_box.jpg"
+                        srcset="/rollinkg.github.io/p/android-studio-databinding%EC%9C%BC%EB%A1%9C-mvvm-%ED%8C%A8%ED%84%B4-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/pawel-czerwinski-8uZPynIu-rQ-unsplash_hud7e36f7e20e71be184458283bdae4646_55974_800x0_resize_q75_box.jpg 800w, /rollinkg.github.io/p/android-studio-databinding%EC%9C%BC%EB%A1%9C-mvvm-%ED%8C%A8%ED%84%B4-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/pawel-czerwinski-8uZPynIu-rQ-unsplash_hud7e36f7e20e71be184458283bdae4646_55974_1600x0_resize_q75_box.jpg 1600w"
+                        width="800" 
+                        height="534" 
+                        loading="lazy"
+                        alt="Featured image of post Android Studio Databinding으로 MVVM 패턴 적용하기" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="rollinkg.github.io/categories/android/" style="background-color: #3DDC84; color: #fff;">
+                Android
+            </a>
+        
+    </header>
+    
+
+    <h2 class="article-title">
+        <a href="rollinkg.github.io/p/android-studio-databinding%EC%9C%BC%EB%A1%9C-mvvm-%ED%8C%A8%ED%84%B4-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/">Android Studio Databinding으로 MVVM 패턴 적용하기</a>
+    </h2>
+
+    
+    <h3 class="article-subtitle">
+        Android Studio / Kotlin
+    </h3>
+    <footer class="article-time">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <time class="article-time--published">2020-03-12</time>
+    </footer></div>
+</header>
+
+    <section class="article-content">
+    <p><strong>MVVM</strong> 패턴이란, 기존의 MVP패턴에서 <code>View</code>와 <code>Presenter</code>가 가지는 의존성을 없애기 위한 고안된 방식입니다. Presentation 로직은 똑같이 <code>ViewModel</code>에서 이루어지지만, 다른 점은 <code>ViewModel</code>은 <code>View</code>의 존재를 모릅니다. 기존의 <code>Presenter</code>은 관련 로직을 처리하고 UI를 갱신하는 메소드를 인터페이스로 작성하여 <code>View</code>에 넘겨주어야 했지만, MVVM 패턴에서는 이런 과정이 없어진것이죠. 그 대신 <code>View</code>에서는 갱신되어야 하는 UI가 <strong>Databinding</strong>으로 <code>ViewModel</code>의 값에 바인드되어 있습니다. 따라서 <code>ViewModel</code>에서의 값이 바뀌면 <code>View</code>의 UI 요소가 자동으로 갱신됩니다. 이런 방식으로 <code>View</code>와 <code>ViewModel</code>의 의존성을 없애고 Android MVVM 패턴을 구현할 수 있습니다.</p>
+<p><figure style="flex-grow: 436; flex-basis: 1047px">
+		<a href="/rollinkg.github.io/p/android-studio-databinding%EC%9C%BC%EB%A1%9C-mvvm-%ED%8C%A8%ED%84%B4-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/mvvm.png" data-size="624x143"><img src="/rollinkg.github.io/p/android-studio-databinding%EC%9C%BC%EB%A1%9C-mvvm-%ED%8C%A8%ED%84%B4-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/mvvm.png"
+				srcset="/rollinkg.github.io/p/android-studio-databinding%EC%9C%BC%EB%A1%9C-mvvm-%ED%8C%A8%ED%84%B4-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/mvvm_hu8b8f5b21f058152f16df4a9f22499b26_22297_480x0_resize_box_2.png 480w, /rollinkg.github.io/p/android-studio-databinding%EC%9C%BC%EB%A1%9C-mvvm-%ED%8C%A8%ED%84%B4-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/mvvm_hu8b8f5b21f058152f16df4a9f22499b26_22297_1024x0_resize_box_2.png 1024w"
+				width="624"
+				height="143"
+				loading="lazy"
+				>
+		</a>
+		
+	</figure></p>
+<hr>
+<h2 id="1-viewmodel">1. ViewModel</h2>
+<p><strong>MVVM</strong> 패턴을 적용하기전에, <code>ViewModel</code>에 대한 이해가 필요합니다. 지금 적용하려는 <strong>MVVM 패턴의 ViewModel</strong>과, <strong>AAC의 ViewModel</strong>은 엄연히 다른 개념이기 때문입니다. 구글 공식 문서에는 ViewModel을 다음과 같이 설명하고 있습니다.</p>
+<p><em>ViewModel 클래스는 수명 주기를 고려하여 UI 관련 데이터를 저장하고 관리하도록 설계되었습니다. ViewModel 클래스를 사용하면 화면 회전과 같이 구성을 변경할 때도 데이터를 유지할 수 있습니다.</em></p>
+<p>제가 위에서 설명한 MVVM의 ViewModel과는 좀 다른 개념이죠? <strong>AAC의 ViewModel</strong>이란, 화면을 회전하는 등의 동작에서 <code>LifeCycle</code>에 의하여 <code>View</code>에 작성되어있는 데이터의 소멸, 메모리 누수등의 문제로 <strong>UI를 다루는 로직에서 View의 데이터 소유권을 분리</strong>하는 방식입니다. View는 생명주기에 의하여 쉽게 데이터가 바뀌므로, 다양한 환경에서도 일관된 데이터를 유지하겠다는 목적이죠.</p>
+<p><em>근데 왜 구분을 안하고 사용할까?</em></p>
+<p>많은 MVVM 예제나, 심지어 안드로이드 공식 문서에서도 <strong>AAC ViewModel</strong>과 <strong>MVVM ViewModel</strong>을 크게 구분하여 사용하지 않습니다. 왜냐면 <code>ViewModel</code> 클래스가 두 개의 역할을 다 하고있기 때문입니다. 자연스럽게 MVVM 패턴의 ViewModel에 AAC ViewModel의 기능도 함께 사용하고 있는것이죠. 아래 내용도 둘을 크게 구분하지 않고 코드 예제로 MVVM 패턴을 적용하는 법을  작성할 것입니다. 또한 추후에 앱의 아키텍처를 설계할 일이 생겼을 때, 위 개념을 자세히 알아두는 것이 클린 아키텍처 설계에 분명 도움이 될 것입니다.</p>
+<hr>
+<h2 id="2-viewmodel-클래스-작성하기">2. ViewModel 클래스 작성하기</h2>
+<p>MVVM에서 View의 역할은 <code>Activity</code>, <code>Fragment</code> 가 하고 있으니 핵심적인 <code>ViewModel</code> 클래스를 작성합니다. 필수적으로 LifeCycle 라이브러리의 <code>ViewModel()</code>을 상속하며, 추후 데이터 바인딩을 위해 필요한 변수는 <code>LiveData</code>로 선언합니다. LiveData의 개념과 사용법은 <a class="link" href="https://rollinkg.github.io/blog/android_livedata/"  target="_blank" rel="noopener"
+    >여기</a>에 작성되어있습니다.</p>
+<p>MyViewModel.kt
+<div class="highlight"><pre class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="k">class</span> <span class="nc">MyViewModel</span> <span class="p">:</span> <span class="n">ViewModel</span><span class="p">()</span> <span class="p">{</span>
+  <span class="o">..</span><span class="p">.</span>
+  <span class="k">val</span> <span class="py">myText</span> <span class="p">=</span> <span class="n">MutableLiveData</span><span class="p">&lt;</span><span class="n">String</span><span class="p">&gt;()</span>
+  <span class="o">..</span><span class="p">.</span>
+<span class="p">}</span></code></pre></div></p>
+<hr>
+<h2 id="3-databinding-으로-viewmodel과-ui-바인딩">3. Databinding 으로 ViewModel과 UI 바인딩</h2>
+<h3 id="1-프로젝트에-databinding-사용">1) 프로젝트에 Databinding 사용</h3>
+<p>app단위 <code>Gradle</code>에 다음 설정을 추가합니다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">android <span class="o">{</span>
+    ...
+
+    buildFeatures<span class="o">{</span>
+        <span class="nv">dataBinding</span> <span class="o">=</span> <span class="nb">true</span>
+    <span class="o">}</span>
+
+    ...
+<span class="o">}</span>
+</code></pre></div><h3 id="2-databinding-layout으로-변환">2) Databinding Layout으로 변환</h3>
+<p>databinding을 적용할 layout xml 루트에 <code>ALT+ENTER</code>를 눌러 <code>convert to databinding layout</code>을 클릭합니다.</p>
+<p><figure style="flex-grow: 280; flex-basis: 672px">
+		<a href="/rollinkg.github.io/p/android-studio-databinding%EC%9C%BC%EB%A1%9C-mvvm-%ED%8C%A8%ED%84%B4-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/databinding_convert.png" data-size="454x162"><img src="/rollinkg.github.io/p/android-studio-databinding%EC%9C%BC%EB%A1%9C-mvvm-%ED%8C%A8%ED%84%B4-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/databinding_convert.png"
+				srcset="/rollinkg.github.io/p/android-studio-databinding%EC%9C%BC%EB%A1%9C-mvvm-%ED%8C%A8%ED%84%B4-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/databinding_convert_hu10b2164bd374cb0db588173c34532936_9116_480x0_resize_box_2.png 480w, /rollinkg.github.io/p/android-studio-databinding%EC%9C%BC%EB%A1%9C-mvvm-%ED%8C%A8%ED%84%B4-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/databinding_convert_hu10b2164bd374cb0db588173c34532936_9116_1024x0_resize_box_2.png 1024w"
+				width="454"
+				height="162"
+				loading="lazy"
+				>
+		</a>
+		
+	</figure></p>
+<p>그럼 layout xml이 다음과 같이 변환됩니다. 기존 View와 추후에 추가할 View들은 <code>&lt;layout&gt;</code> 내부로 들어간 루트 뷰에 작성하면 됩니다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="cp">&lt;?xml version=&#34;1.0&#34; encoding=&#34;utf-8&#34;?&gt;</span>
+<span class="nt">&lt;layout</span> <span class="na">xmlns:android=</span><span class="s">&#34;http://schemas.android.com/apk/res/android&#34;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;data&gt;</span>
+
+    <span class="nt">&lt;/data&gt;</span>
+    
+    <span class="nt">&lt;androidx.constraintlayout.widget.ConstraintLayout&gt;</span>
+      ...
+      
+    <span class="nt">&lt;/androidx.constraintlayout.widget.ConstraintLayout&gt;</span>
+<span class="nt">&lt;/layout&gt;</span>
+</code></pre></div><h3 id="3-databinding-data-선언">3) Databinding data 선언</h3>
+<p><code>&lt;data&gt;</code> 태그 내부에 사용하고 싶은 data를 변수처럼 선언할 수 있습니다. 이번 포스트에서는 ViewModel의 값과 바인딩을 할 것이기 때문에 <code>ViewModel</code>을 작성하도록 하겠습니다. <code>&lt;variable&gt;</code>태그 내부에 변수 이름과 타입을 다음과 같이 명시합니다.
+<code>&lt;type&gt;</code>의 경우 프로젝트 패키지명을 포함하여 클래스 명까지 적어주어야 합니다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="cp">&lt;?xml version=&#34;1.0&#34; encoding=&#34;utf-8&#34;?&gt;</span>
+<span class="nt">&lt;layout</span> <span class="na">xmlns:android=</span><span class="s">&#34;http://schemas.android.com/apk/res/android&#34;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;data&gt;</span>
+        <span class="nt">&lt;variable</span>
+            <span class="na">name=</span><span class="s">&#34;vm&#34;</span>
+            <span class="na">type=</span><span class="s">&#34;com.example.project.MyViewModel&#34;</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;/data&gt;</span>
+
+    <span class="nt">&lt;androidx.constraintlayout.widget.ConstraintLayout&gt;</span>
+      ...
+      
+    <span class="nt">&lt;/androidx.constraintlayout.widget.ConstraintLayout&gt;</span>
+
+<span class="nt">&lt;/layout&gt;</span>
+</code></pre></div><h3 id="4-원하는-ui-요소-바인딩">4) 원하는 UI 요소 바인딩</h3>
+<p>다음으로 원하는 UI와 ViewModel의 값을 바인딩합니다. <code>@{}</code> 내부에 <code>&lt;data&gt;</code>에 선언해두었던 변수 명으로 접근이 가능합니다. 아래 코드는 <code>TextView</code>를 <strong>MyViewModel.kt</strong> 에 선언되어있는 LiveData인 myText와 바인딩하는 예제입니다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml">...
+<span class="nt">&lt;Textview&gt;</span>
+  android:width=&#34;wrap_content&#34;
+  andriod:height=&#34;wrap_content&#34;
+  andriod:text=&#34;@{vm.myText}&#34;
+</code></pre></div><hr>
+<h2 id="3-view에서-databinding-설정">3. View에서 Databinding 설정</h2>
+<p>위 과정을 마쳤다면, <code>View</code>단에서 databinding 설정을 해주어야합니다. layout xml을 databing으로 변환했다면, 자동으로 databinding 클래스가 생성됩니다. 이를 이용하여 View에서 layout을 inflate하고 내부 view 객체에 접근합니다. 이때 생성되는 databinding 클래스는 xml 파일명을 카멜 표기법으로 변환한 이름으로 생성됩니다.</p>
+<hr>
+<h3 id="1-binding-객체-선언">1) binding 객체 선언</h3>
+<p>아래 코드와 같이 <code>lateinit</code> 태그로 바인딩 객체를 생성합니다</p>
+<div class="highlight"><pre class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="k">lateinit</span> <span class="k">var</span> <span class="py">binding</span> <span class="p">:</span> <span class="n">ActivityMainBinding</span>
+
+<span class="k">override</span> <span class="k">fun</span> <span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">:</span> <span class="n">Bundle</span><span class="p">?)</span> <span class="p">{</span>
+  <span class="o">..</span><span class="p">.</span>
+
+<span class="p">}</span>
+</code></pre></div><h3 id="2-databindingutil로-레이아웃-inflate">2) DatabindingUtil로 레이아웃 inflate</h3>
+<p><code>setContentView</code>를 다음 예제와 같이 변경하여 호출합니다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="k">lateinit</span> <span class="k">var</span> <span class="py">binding</span> <span class="p">:</span> <span class="n">ActivityMainBinding</span>
+
+<span class="k">override</span> <span class="k">fun</span> <span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">:</span> <span class="n">Bundle</span><span class="p">?)</span> <span class="p">{</span>
+  <span class="o">..</span><span class="p">.</span>
+
+  <span class="n">binding</span> <span class="p">=</span> <span class="n">DataBindingUtil</span><span class="p">.</span><span class="n">setContentView</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="n">R</span><span class="p">.</span><span class="n">layout</span><span class="p">.</span><span class="n">activity_main</span><span class="p">)</span>
+
+<span class="p">}</span>
+</code></pre></div><h3 id="3-viewmodel-생성">3) ViewModel 생성</h3>
+<p>마지막으로 View에서 <code>ViewModel</code> 객체를 생성합니다. 중요한점은 <code>ViewModel</code>은 일반 객체처럼 생성하면 안됩니다. 위 <code>ViewModel</code>의 개념에서 설명한 것처럼, 일반 객체처럼 생성할 경우 화면 전환에 따라 여러개의 ViewModel이 생성되거나 메모리 누수등의 문제가 발생할 수 있습니다. 따라서 <code>ViewModelProvider</code>를 통해 생성하거나 <code>koin</code> 내부 라이브러리 등 뷰모델 주입 메소드를 통해 생성하는 것을 권장합니다.</p>
+<p><strong>MainActivity.kt</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-kotlin" data-lang="kotlin">
+<span class="k">private</span> <span class="k">lateinit</span> <span class="k">var</span> <span class="py">viewModel</span> <span class="p">:</span> <span class="n">MyViewModel</span>
+
+<span class="k">override</span> <span class="k">fun</span> <span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">:</span> <span class="n">Bundle</span><span class="p">?)</span> <span class="p">{</span>
+  <span class="o">..</span><span class="p">.</span>
+    <span class="n">viewModel</span> <span class="p">=</span> <span class="n">ViewModelProvider</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="n">ViewModelProvider</span><span class="p">.</span><span class="n">NewInstanceFactory</span><span class="p">()).</span><span class="k">get</span><span class="p">(</span><span class="n">MyViewModel</span><span class="o">::</span><span class="k">class</span><span class="p">.</span><span class="n">java</span><span class="p">)</span>
+  <span class="o">..</span><span class="p">.</span>
+<span class="p">}</span>
+</code></pre></div><h3 id="4-xml-data로-viewmodel-전달">4) XML data로 ViewModel 전달</h3>
+<p>마지막으로 xml에 <code>&lt;data&gt;</code>태그로 선언했던 vm 값에 실제 ViewModel을 넘겨주어야 합니다. xml 내부 <code>&lt;data&gt;</code>,  <code>&lt;view&gt;</code> 는 binding 객체로 접근할 수 있습니다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="n">binding</span><span class="p">.</span><span class="n">vm</span> <span class="p">=</span> <span class="n">viewModel</span>
+</code></pre></div><h3 id="5-lifecycler-owner-전달">5) Lifecycler Owner 전달</h3>
+<p>마지막으로 <code>LifeCyleOwner</code>를 전달합니다. ViewModel 내부 <code>LiveData</code>는 LifeCycler에 의존적이기 때문에 <code>LifeCycleOwner</code>를 전달하지 않으면 실시간 UI 갱신이 일어나지 않습니다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="c1">//Activity
+</span><span class="c1"></span><span class="n">binding</span><span class="p">.</span><span class="n">lifecycleOwner</span> <span class="p">=</span> <span class="k">this</span><span class="nd">@MainActivity</span>
+
+<span class="c1">//Fragment
+</span><span class="c1"></span><span class="n">binding</span><span class="p">.</span><span class="n">lifecycleOwner</span> <span class="p">=</span> <span class="n">viewLifecycleOwner</span>
+</code></pre></div><hr>
+<h2 id="4-마무리">4. 마무리</h2>
+<p>위 작업을 모두 마쳤으면 <strong>MVVM + Databinding</strong> 사용 준비는 끝났습니다. ViewModel에서 bind된 <code>LiveData</code>의 <code>value</code>가 변할 경우, <code>textView</code>가 자동으로 갱신되는 것을 확인 할 수 있습니다.</p>
+<hr>
+<p><strong>Reference</strong></p>
+<ul>
+<li><a href="https://developer.android.com/topic/libraries/architecture/viewmodel?hl=ko">https://developer.android.com/topic/libraries/architecture/viewmodel?hl=ko</a></li>
+</ul>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="rollinkg.github.io/tags/android/">android</a>
+        
+            <a href="rollinkg.github.io/tags/kotlin/">kotlin</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+    
+</article>
+
+    <aside class="related-contents--wrapper">
+    
+    
+        <h2 class="section-title">Related contents</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="">
+    <a href="rollinkg.github.io/p/android-livedata-%EC%95%8C%EC%95%84%EB%B3%B4%EA%B8%B0/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Android LiveData 알아보기</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="rollinkg.github.io/p/android-studio-mpandroidchart-%ED%8C%8C%EC%9D%B4-%EA%B7%B8%EB%9E%98%ED%94%84-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/">
+        
+        
+            <div class="article-image">
+                <img src="/rollinkg.github.io/p/android-studio-mpandroidchart-%ED%8C%8C%EC%9D%B4-%EA%B7%B8%EB%9E%98%ED%94%84-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/_hu958d513eeefe5556a31d065479ecc5ac_14205_7bffa90d1e66ca9b8184fda08a99dc7e.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="" 
+                        data-hash="md5-jq4GZk3fs&#43;jcbgAHVstwOw==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Android Studio MPAndroidChart 파이 그래프 사용하기</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="rollinkg.github.io/p/android-studio-mpandroidchart-%EB%A7%89%EB%8C%80-%EA%B7%B8%EB%9E%98%ED%94%84-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/">
+        
+        
+            <div class="article-image">
+                <img src="/rollinkg.github.io/p/android-studio-mpandroidchart-%EB%A7%89%EB%8C%80-%EA%B7%B8%EB%9E%98%ED%94%84-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/_huf941de4769045cdfa8c9ee7036519a2a_35369_36687b530fa140121781e790cfd060e7.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="" 
+                        data-hash="md5-YBFrHM/IYy6aZffVHfPvwg==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Android Studio MPAndroidChart 막대 그래프 사용하기</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="rollinkg.github.io/p/android-sqlite-%EC%B6%94%EC%83%81%ED%99%94-%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC-room-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/">
+        
+        
+            <div class="article-image">
+                <img src="/rollinkg.github.io/p/android-sqlite-%EC%B6%94%EC%83%81%ED%99%94-%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC-room-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/_hu0a3f1163de68d0b9471979ebf0ecf11e_32400_a354a9a1f5102742bceb4ec236f4ce2f.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="" 
+                        data-hash="md5-rC&#43;UhC7sa7h6Y66uIugvQQ==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Android SQLite 추상화 라이브러리 Room 사용하기</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
+    
+</aside>
+
+
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (DISQUS) {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2021 RollinKG&#39;s Devlog
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="2.3.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/rollinkg.github.io/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

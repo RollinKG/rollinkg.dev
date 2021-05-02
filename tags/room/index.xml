@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>room on RollinKG&#39;s Devlog</title>
+    <link>rollinkg.github.io/tags/room/</link>
+    <description>Recent content in room on RollinKG&#39;s Devlog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ko-kr</language>
+    <lastBuildDate>Wed, 17 Jun 2020 00:00:00 +0000</lastBuildDate><atom:link href="rollinkg.github.io/tags/room/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Android SQLite 추상화 라이브러리 Room 사용하기</title>
+      <link>rollinkg.github.io/p/android-sqlite-%EC%B6%94%EC%83%81%ED%99%94-%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC-room-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/</link>
+      <pubDate>Wed, 17 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>rollinkg.github.io/p/android-sqlite-%EC%B6%94%EC%83%81%ED%99%94-%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC-room-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;Room&lt;/strong&gt;은 SQLite에 대한 추상화 레이어를 제공하여 로컬 데이터베이스 사용을 원할하게 합니다. Android는 SQLite 대신 Room을 사용할 것을 &lt;strong&gt;적극적으로 권장&lt;/strong&gt; 하며, Room을 사용하여 상당한 양의 앱 데이터를 구조화된 형태로 로컬에 저장할 수 있습니다.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
