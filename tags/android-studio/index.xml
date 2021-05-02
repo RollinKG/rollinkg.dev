@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Android Studio on RollinKG&#39;s Devlog</title>
+    <link>https://rollinkg.dev/tags/android-studio/</link>
+    <description>Recent content in Android Studio on RollinKG&#39;s Devlog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ko-kr</language>
+    <lastBuildDate>Wed, 09 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://rollinkg.dev/tags/android-studio/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Android Studio Firebase Firestore에서 Glide로 이미지 가져오기</title>
+      <link>https://rollinkg.dev/p/android-studio-firebase-firestore%EC%97%90%EC%84%9C-glide%EB%A1%9C-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EA%B0%80%EC%A0%B8%EC%98%A4%EA%B8%B0/</link>
+      <pubDate>Wed, 09 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://rollinkg.dev/p/android-studio-firebase-firestore%EC%97%90%EC%84%9C-glide%EB%A1%9C-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EA%B0%80%EC%A0%B8%EC%98%A4%EA%B8%B0/</guid>
+      <description>&lt;p&gt;+++
+author = &amp;ldquo;RollinKG&amp;rdquo;
+title = &amp;ldquo;Android Studio Firebase Firestore에서 Glide로 이미지 가져오기&amp;rdquo;
+date = &amp;ldquo;2020-09-09&amp;rdquo;
+description = &amp;ldquo;Android Studio / Kotlin&amp;rdquo;
+tags = [
+&amp;ldquo;android&amp;rdquo;,
+&amp;ldquo;kotlin&amp;rdquo;,
+&amp;ldquo;Firebase&amp;rdquo;
+]
+categories = [
+&amp;ldquo;android&amp;rdquo;,
+]
+image = &amp;ldquo;matt-le-SJSpo9hQf7s-unsplash.jpg&amp;rdquo;
++++&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -6,11 +6,11 @@
     <description>Recent content in Tags on RollinKG&#39;s Devlog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ko-kr</language>
-    <lastBuildDate>Tue, 08 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://rollinkg.dev/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 07 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://rollinkg.dev/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>android</title>
       <link>https://rollinkg.dev/tags/android/</link>
-      <pubDate>Tue, 08 Sep 2020 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 07 Oct 2020 00:00:00 +0000</pubDate>
       
       <guid>https://rollinkg.dev/tags/android/</guid>
       <description></description>
@@ -19,9 +19,27 @@
     <item>
       <title>kotlin</title>
       <link>https://rollinkg.dev/tags/kotlin/</link>
-      <pubDate>Tue, 08 Sep 2020 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 07 Oct 2020 00:00:00 +0000</pubDate>
       
       <guid>https://rollinkg.dev/tags/kotlin/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>mvvm</title>
+      <link>https://rollinkg.dev/tags/mvvm/</link>
+      <pubDate>Wed, 07 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://rollinkg.dev/tags/mvvm/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Android Studio</title>
+      <link>https://rollinkg.dev/tags/android-studio/</link>
+      <pubDate>Wed, 09 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://rollinkg.dev/tags/android-studio/</guid>
       <description></description>
     </item>
     
