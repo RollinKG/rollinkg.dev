@@ -665,6 +665,63 @@
 &lt;/ul&gt;</description>
         </item>
         <item>
+        <title>Android Studio Viewpager2 좌/우 Fragment 미리보기</title>
+        <link>https://rollinkg.dev/p/android-studio-viewpager2-%EC%A2%8C/%EC%9A%B0-fragment-%EB%AF%B8%EB%A6%AC%EB%B3%B4%EA%B8%B0/</link>
+        <pubDate>Wed, 17 Jun 2020 00:00:00 +0000</pubDate>
+        
+        <guid>https://rollinkg.dev/p/android-studio-viewpager2-%EC%A2%8C/%EC%9A%B0-fragment-%EB%AF%B8%EB%A6%AC%EB%B3%B4%EA%B8%B0/</guid>
+        <description>&lt;hr&gt;
+&lt;h2 id=&#34;1-sample-code&#34;&gt;1. Sample Code&lt;/h2&gt;
+&lt;p&gt;ViewPager2를 사용하는 스크립트에 다음 코드 추가&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span class=&#34;n&#34;&gt;viewpager2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;apply&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+            &lt;span class=&#34;n&#34;&gt;clipToPadding&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;false&lt;/span&gt;   &lt;span class=&#34;c1&#34;&gt;// allow full width shown with padding
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;            &lt;span class=&#34;n&#34;&gt;clipChildren&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;false&lt;/span&gt;    &lt;span class=&#34;c1&#34;&gt;// allow left/right item is not clipped
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;            &lt;span class=&#34;n&#34;&gt;offscreenPageLimit&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;2&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;// make sure left/right item is rendered
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+
+        &lt;span class=&#34;c1&#34;&gt;// 좌/우 노출되는 크기를 크게하려면 offsetPx 증가
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;k&#34;&gt;val&lt;/span&gt; &lt;span class=&#34;py&#34;&gt;offsetPx&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;15.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;dpToPx&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;resources&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;displayMetrics&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;viewpager2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;setPadding&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;offsetPx&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;offsetPx&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;offsetPx&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;offsetPx&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+
+        &lt;span class=&#34;c1&#34;&gt;// 페이지간 마진 크게하려면 pageMarginPx 증가
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;k&#34;&gt;val&lt;/span&gt; &lt;span class=&#34;py&#34;&gt;pageMarginPx&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;7.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;dpToPx&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;resources&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;displayMetrics&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;val&lt;/span&gt; &lt;span class=&#34;py&#34;&gt;marginTransformer&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;MarginPageTransformer&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;pageMarginPx&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;viewpager2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;setPageTransformer&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;marginTransformer&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span class=&#34;k&#34;&gt;fun&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;Int&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;dpToPx&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;displayMetrics&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;DisplayMetrics&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Int&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;this&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;displayMetrics&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;density&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;toInt&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;Reference&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://ask.xiaolee.net/questions/1109758&#34;&gt;https://ask.xiaolee.net/questions/1109758&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+        </item>
+        <item>
+        <title>Android Studio UI XML 이것저것</title>
+        <link>https://rollinkg.dev/p/android-studio-ui-xml-%EC%9D%B4%EA%B2%83%EC%A0%80%EA%B2%83/</link>
+        <pubDate>Tue, 24 Mar 2020 00:00:00 +0000</pubDate>
+        
+        <guid>https://rollinkg.dev/p/android-studio-ui-xml-%EC%9D%B4%EA%B2%83%EC%A0%80%EA%B2%83/</guid>
+        <description>&lt;p&gt;XML단에서 적용할 수 있는 여러 UI 요소들&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;1-그림자-border-제거&#34;&gt;1. 그림자 border 제거&lt;/h3&gt;
+&lt;p&gt;특히나 Button의 경우 기본적으로 있는 그림자 border를 제거하고 싶은 때가 있다.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;style=&amp;#34;?android:attr/borderlessButtonStyle&amp;#34;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;h3 id=&#34;2-ripple-효과-주는법&#34;&gt;2. Ripple 효과 주는법&lt;/h3&gt;
+&lt;p&gt;border와 별개로 Clickable한 효과를 주려면 아래 코드를 추가한다.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;android:foreground=&amp;#34;?android:selectableItemBackground&amp;#34;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;3-toolbar-내-레이아웃-치우침&#34;&gt;3. Toolbar 내 레이아웃 치우침&lt;/h3&gt;
+&lt;p&gt;Android Studio Toolbar 내부에 원하는 레이아웃을 배치하려 할때 치우침(특히 오른쪽으로) 현상이 생긴다&lt;/p&gt;
+&lt;p&gt;이는 &lt;code&gt;Toolbar&lt;/code&gt; 레이아웃이 기본적으로 &lt;code&gt;16dp&lt;/code&gt;의 여백을 가지고 있기 때문이다. 이 여백은 툴바에서 사용되는 홈 버튼, 앱 아이콘 등을 위해 설정되어 있는 것으로 &lt;strong&gt;앱의 메인 AppBar&lt;/strong&gt;로 사용되는 경우 건들지 않는 것이 좋다. 위 기능 사용 목적이 아닌 내부 레이아웃을 배치하기 위함이라면 아래 코드를 추가하여 치우침 현상을 해결할 수 있다.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span class=&#34;nt&#34;&gt;&amp;lt;android.support.v7.widget.Toolbar&lt;/span&gt;
+    &lt;span class=&#34;na&#34;&gt;app:contentInsetStart=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;0dp&amp;#34;&lt;/span&gt;
+    &lt;span class=&#34;na&#34;&gt;app:contentInsetLeft=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;0dp&amp;#34;&lt;/span&gt;
+    &lt;span class=&#34;err&#34;&gt;...&lt;/span&gt;
+&lt;span class=&#34;nt&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id=&#34;reference&#34;&gt;Reference&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://stackoverflow.com/questions/40819965/layout-inside-toolbar-is-shifted-to-the-right&#34;&gt;https://stackoverflow.com/questions/40819965/layout-inside-toolbar-is-shifted-to-the-right&lt;/a&gt;&lt;/p&gt;</description>
+        </item>
+        <item>
         <title>Android Studio Databinding으로 MVVM 패턴 적용하기</title>
         <link>https://rollinkg.dev/p/android-studio-databinding%EC%9C%BC%EB%A1%9C-mvvm-%ED%8C%A8%ED%84%B4-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/</link>
         <pubDate>Thu, 12 Mar 2020 00:00:00 +0000</pubDate>
@@ -810,6 +867,83 @@
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://developer.android.com/topic/libraries/architecture/viewmodel?hl=ko&#34;&gt;https://developer.android.com/topic/libraries/architecture/viewmodel?hl=ko&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;</description>
+        </item>
+        <item>
+        <title>Android Studio Bottom Sheet 하단 팝업 사용하기</title>
+        <link>https://rollinkg.dev/p/android-studio-bottom-sheet-%ED%95%98%EB%8B%A8-%ED%8C%9D%EC%97%85-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/</link>
+        <pubDate>Sun, 29 Dec 2019 00:00:00 +0000</pubDate>
+        
+        <guid>https://rollinkg.dev/p/android-studio-bottom-sheet-%ED%95%98%EB%8B%A8-%ED%8C%9D%EC%97%85-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/</guid>
+        <description>&lt;hr&gt;
+&lt;h2 id=&#34;1-bottom-sheet-layout-작성&#34;&gt;1. Bottom Sheet Layout 작성&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;layout\bottom_sheet.xml&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span class=&#34;cp&#34;&gt;&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;utf-8&amp;#34;?&amp;gt;&lt;/span&gt;
+&lt;span class=&#34;nt&#34;&gt;&amp;lt;LinearLayout&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;xmlns:android=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;http://schemas.android.com/apk/res/android&amp;#34;&lt;/span&gt;
+    &lt;span class=&#34;na&#34;&gt;xmlns:app=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;http://schemas.android.com/apk/res-auto&amp;#34;&lt;/span&gt;
+    &lt;span class=&#34;na&#34;&gt;android:id=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;@+id/bottomSheetContainer&amp;#34;&lt;/span&gt;
+    &lt;span class=&#34;na&#34;&gt;android:layout_width=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;match_parent&amp;#34;&lt;/span&gt;
+    &lt;span class=&#34;na&#34;&gt;android:layout_height=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;wrap_content&amp;#34;&lt;/span&gt;
+    &lt;span class=&#34;na&#34;&gt;android:orientation=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;vertical&amp;#34;&lt;/span&gt;
+    &lt;span class=&#34;na&#34;&gt;android:gravity=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;center&amp;#34;&lt;/span&gt;
+    &lt;span class=&#34;na&#34;&gt;android:layout_gravity=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;bottom&amp;#34;&lt;/span&gt;
+    &lt;span class=&#34;na&#34;&gt;android:padding=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;10dp&amp;#34;&lt;/span&gt;
+    &lt;span class=&#34;na&#34;&gt;android:animateLayoutChanges=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;true&amp;#34;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&#34;nt&#34;&gt;&amp;lt;/LinearLayout&amp;gt;&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;2-bottom-sheet-style-적용&#34;&gt;2. Bottom Sheet Style 적용&lt;/h2&gt;
+&lt;p&gt;모서리를 &lt;em&gt;&lt;strong&gt;둥글게&lt;/strong&gt;&lt;/em&gt;할 경우&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;@drawble/bottom_sheet_bg&lt;/code&gt; 작성&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span class=&#34;cp&#34;&gt;&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;utf-8&amp;#34;?&amp;gt;&lt;/span&gt;
+&lt;span class=&#34;nt&#34;&gt;&amp;lt;shape&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;xmlns:android=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;http://schemas.android.com/apk/res/android&amp;#34;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;solid&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;android:color=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;#fff&amp;#34;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;/&amp;gt;&lt;/span&gt;
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;corners&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;android:topLeftRadius=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;12dp&amp;#34;&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;android:topRightRadius=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;12dp&amp;#34;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;/&amp;gt;&lt;/span&gt;
+&lt;span class=&#34;nt&#34;&gt;&amp;lt;/shape&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;style.xml&lt;/code&gt;에 다음 코드 추가&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span class=&#34;nt&#34;&gt;&amp;lt;resources&amp;gt;&lt;/span&gt;
+    ...
+    
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;style&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;name=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;BottomSheet&amp;#34;&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;parent=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;Theme.Design.BottomSheetDialog&amp;#34;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class=&#34;nt&#34;&gt;&amp;lt;item&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;name=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;bottomSheetStyle&amp;#34;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;gt;&lt;/span&gt;@style/BottomSheetStyle&lt;span class=&#34;nt&#34;&gt;&amp;lt;/item&amp;gt;&lt;/span&gt;
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;/style&amp;gt;&lt;/span&gt;
+
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;style&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;name=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;BottomSheetStyle&amp;#34;&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;parent=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;Widget.Design.BottomSheet.Modal&amp;#34;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class=&#34;nt&#34;&gt;&amp;lt;item&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;name=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;android:background&amp;#34;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;gt;&lt;/span&gt;@drawable/bottom_sheet_background&lt;span class=&#34;nt&#34;&gt;&amp;lt;/item&amp;gt;&lt;/span&gt;
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;/style&amp;gt;&lt;/span&gt;
+
+  ...
+&lt;span class=&#34;nt&#34;&gt;&amp;lt;/resources&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;3-코드-작성&#34;&gt;3. 코드 작성&lt;/h2&gt;
+&lt;p&gt;위 &lt;code&gt;layout&lt;/code&gt; 과 &lt;code&gt;style&lt;/code&gt; xml 작성이 끝났으면, 원하는 곳에서 &lt;code&gt;layoutinflate&lt;/code&gt;하여 &lt;code&gt;show&lt;/code&gt;하면 된다.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span class=&#34;k&#34;&gt;fun&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;showBottomSheetDialog&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(){&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;val&lt;/span&gt; &lt;span class=&#34;py&#34;&gt;bottomSheetDialog&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;BottomSheetDialog&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;requireContext&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(),&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;R&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;style&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;BottomSheet&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;val&lt;/span&gt; &lt;span class=&#34;py&#34;&gt;bottomSheetBinding&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;LayoutMainBottomSheetBinding&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;inflate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;layoutInflater&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;   &lt;span class=&#34;c1&#34;&gt;//viewBinding Code
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;c1&#34;&gt;//bottomSheetDialog.setContentView(R.id.bottomSheetContainer)
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;
+        &lt;span class=&#34;c1&#34;&gt;//Bottom Sheet 내부 view 상호작용 및 기타 코드 작성
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;bottomSheetDialog&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;show&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;Reference&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://medium.com/@droidbyme/android-bottom-sheet-7e9cfcec6427&#34;&gt;https://medium.com/@droidbyme/android-bottom-sheet-7e9cfcec6427&lt;/a&gt;&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>Android ADB 콘솔 명령어 모음</title>
+        <link>https://rollinkg.dev/p/android-adb-%EC%BD%98%EC%86%94-%EB%AA%85%EB%A0%B9%EC%96%B4-%EB%AA%A8%EC%9D%8C/</link>
+        <pubDate>Sun, 03 Nov 2019 00:00:00 +0000</pubDate>
+        
+        <guid>https://rollinkg.dev/p/android-adb-%EC%BD%98%EC%86%94-%EB%AA%85%EB%A0%B9%EC%96%B4-%EB%AA%A8%EC%9D%8C/</guid>
+        <description>&lt;hr&gt;
+&lt;h2 id=&#34;1-adb-logcat&#34;&gt;1. Adb Logcat&lt;/h2&gt;
+&lt;p&gt;Adb 로그캣 출력하기&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;adb shell logcat
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;2-localhost-forward&#34;&gt;2. Localhost Forward&lt;/h2&gt;
+&lt;p&gt;Localhost Port Forwarding&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;adb forward tcp:8080 tcp:8080
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Debug환경에서 포트를 변경할 경우&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;debug &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt; 
+    resValue&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;string&amp;#34;&lt;/span&gt;, &lt;span class=&#34;s2&#34;&gt;&amp;#34;PORT_NUMBER&amp;#34;&lt;/span&gt;, &lt;span class=&#34;s2&#34;&gt;&amp;#34;8081&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; 
+&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;</description>
         </item>
         
     </channel>

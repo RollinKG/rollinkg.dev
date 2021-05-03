@@ -1,18 +1,17 @@
 <!DOCTYPE html>
 <html lang="ko-kr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Android Studio / Kotlin'><title>Android SQLite 추상화 라이브러리 Room 사용하기</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Android Studio / Kotlin'><title>Android Studio UI XML 이것저것</title>
 
-<link rel='canonical' href='https://rollinkg.dev/p/android-sqlite-%EC%B6%94%EC%83%81%ED%99%94-%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC-room-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/'>
+<link rel='canonical' href='https://rollinkg.dev/p/android-studio-ui-xml-%EC%9D%B4%EA%B2%83%EC%A0%80%EA%B2%83/'>
 
-<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='Android SQLite 추상화 라이브러리 Room 사용하기'>
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='Android Studio UI XML 이것저것'>
 <meta property='og:description' content='Android Studio / Kotlin'>
-<meta property='og:url' content='https://rollinkg.dev/p/android-sqlite-%EC%B6%94%EC%83%81%ED%99%94-%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC-room-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/'>
+<meta property='og:url' content='https://rollinkg.dev/p/android-studio-ui-xml-%EC%9D%B4%EA%B2%83%EC%A0%80%EA%B2%83/'>
 <meta property='og:site_name' content='RollinKG&#39;s Devlog'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='android' /><meta property='article:tag' content='kotlin' /><meta property='article:tag' content='room' /><meta property='article:published_time' content='2020-06-17T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2020-06-17T00:00:00&#43;00:00'/><meta property='og:image' content='https://rollinkg.dev/p/android-sqlite-%EC%B6%94%EC%83%81%ED%99%94-%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC-room-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/luca-bravo-alS7ewQ41M8-unsplash.jpg' />
-<meta name="twitter:title" content="Android SQLite 추상화 라이브러리 Room 사용하기">
-<meta name="twitter:description" content="Android Studio / Kotlin"><meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content='https://rollinkg.dev/p/android-sqlite-%EC%B6%94%EC%83%81%ED%99%94-%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC-room-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/luca-bravo-alS7ewQ41M8-unsplash.jpg' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='android' /><meta property='article:tag' content='kotlin' /><meta property='article:published_time' content='2020-03-24T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2020-03-24T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="Android Studio UI XML 이것저것">
+<meta name="twitter:description" content="Android Studio / Kotlin">
 <script type="application/javascript">
 var doNotTrack = false;
 if (!doNotTrack) {
@@ -194,21 +193,9 @@ if (!doNotTrack) {
         </a>
     </div>
 
-    <article class="has-image main-article">
+    <article class="main-article">
 
     <header class="article-header">
-        <div class="article-image">
-            <a href="/p/android-sqlite-%EC%B6%94%EC%83%81%ED%99%94-%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC-room-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/">
-                <img src="/p/android-sqlite-%EC%B6%94%EC%83%81%ED%99%94-%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC-room-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/luca-bravo-alS7ewQ41M8-unsplash_hu0a3f1163de68d0b9471979ebf0ecf11e_32400_800x0_resize_q75_box.jpg"
-                        srcset="/p/android-sqlite-%EC%B6%94%EC%83%81%ED%99%94-%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC-room-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/luca-bravo-alS7ewQ41M8-unsplash_hu0a3f1163de68d0b9471979ebf0ecf11e_32400_800x0_resize_q75_box.jpg 800w, /p/android-sqlite-%EC%B6%94%EC%83%81%ED%99%94-%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC-room-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/luca-bravo-alS7ewQ41M8-unsplash_hu0a3f1163de68d0b9471979ebf0ecf11e_32400_1600x0_resize_q75_box.jpg 1600w"
-                        width="800" 
-                        height="534" 
-                        loading="lazy"
-                        alt="Featured image of post Android SQLite 추상화 라이브러리 Room 사용하기" />
-                
-            </a>
-        </div>
-    
 
     <div class="article-details">
     
@@ -222,7 +209,7 @@ if (!doNotTrack) {
     
 
     <h2 class="article-title">
-        <a href="/p/android-sqlite-%EC%B6%94%EC%83%81%ED%99%94-%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC-room-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/">Android SQLite 추상화 라이브러리 Room 사용하기</a>
+        <a href="/p/android-studio-ui-xml-%EC%9D%B4%EA%B2%83%EC%A0%80%EA%B2%83/">Android Studio UI XML 이것저것</a>
     </h2>
 
     
@@ -238,102 +225,31 @@ if (!doNotTrack) {
 
 
 
-        <time class="article-time--published">2020-06-17</time>
+        <time class="article-time--published">2020-03-24</time>
     </footer></div>
 </header>
 
     <section class="article-content">
-    <p><strong>Room</strong>은 SQLite에 대한 추상화 레이어를 제공하여 로컬 데이터베이스 사용을 원할하게 합니다. Android는 SQLite 대신 Room을 사용할 것을 <strong>적극적으로 권장</strong> 하며, Room을 사용하여 상당한 양의 앱 데이터를 구조화된 형태로 로컬에 저장할 수 있습니다.</p>
+    <p>XML단에서 적용할 수 있는 여러 UI 요소들</p>
 <hr>
-<h2 id="1-room-import">1. Room Import</h2>
-<p>앱 단위 Gradle 최상단에 <code>kapt</code> 플러그인을 적용합니다. kapt란 <code>Kotlin Annotation Processing Tool</code>의 줄임말로, 코틀린 환경에서 <code>annotation</code> 코드 블럭을 컴파일 하기 위하여 필요합니다.</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">apply plugin: <span class="s1">&#39;kotlin-kapt&#39;</span>
-</code></pre></div><p>다음으로 <code>Room</code> 라이브러리 의존성을 추가하고 <code>Graadle Sync</code>하여 프로젝트에 동기화 합니다.</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">dependencies<span class="o">{</span>
-    ...
-    implementation <span class="s1">&#39;androidx.room:room-runtime:2.2.5&#39;</span>
-    kapt <span class="s1">&#39;androidx.room:room-compiler:2.2.5&#39;</span>
-
-    // optional - Kotlin Extensions and Coroutines support <span class="k">for</span> Room
-    implementation <span class="s2">&#34;androidx.room:room-ktx:2.2.5&#34;</span>
-<span class="o">}</span>
+<h3 id="1-그림자-border-제거">1. 그림자 border 제거</h3>
+<p>특히나 Button의 경우 기본적으로 있는 그림자 border를 제거하고 싶은 때가 있다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml">style=&#34;?android:attr/borderlessButtonStyle&#34;
 </code></pre></div><hr>
-<h2 id="2-room-클래스-정의">2. Room 클래스 정의</h2>
-<p><strong>Room</strong>은 기본적으로 <strong>테이블</strong> 형식으로 데이터를 관리하며, 사용하기 위해선 다음 3가지 구성요소를 작성해야합니다. 자세한 내용은 아래 항목에 예제 코드와 함께 작성하였습니다.</p>
-<ul>
-<li><strong>Data Entity</strong>: data class로 작성하며, DB의 스키마, 테이블을 정의</li>
-<li><strong>DAO</strong>: DB에 엑세스 하는 메소드가 포함</li>
-<li><strong>Database</strong>: DB의 기본 엑세스 포인트</li>
-</ul>
-<h3 id="1-data-entity">1) Data Entity</h3>
-<p><strong>User.kt</strong></p>
-<div class="highlight"><pre class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="nd">@Entity</span>
-    <span class="k">data</span> <span class="k">class</span> <span class="nc">User</span><span class="p">(</span>
-        <span class="nd">@PrimaryKey</span> <span class="k">val</span> <span class="py">uid</span><span class="p">:</span> <span class="n">Int</span><span class="p">,</span>
-        <span class="nd">@ColumnInfo</span><span class="p">(</span><span class="n">name</span> <span class="p">=</span> <span class="s2">&#34;first_name&#34;</span><span class="p">)</span> <span class="k">val</span> <span class="py">firstName</span><span class="p">:</span> <span class="n">String</span><span class="p">?,</span>
-        <span class="nd">@ColumnInfo</span><span class="p">(</span><span class="n">name</span> <span class="p">=</span> <span class="s2">&#34;last_name&#34;</span><span class="p">)</span> <span class="k">val</span> <span class="py">lastName</span><span class="p">:</span> <span class="n">String</span><span class="p">?</span>
-    <span class="p">)</span>
-</code></pre></div><p>첫번째로 Data Entity입니다. 원하는 <code>data Class</code>를 <code>@Entity</code> 어노테이션으로 감싸 작성합니다. 내부에는 기존 data class 사용과 동일하게 원하는 데이터와 타입을 명시해주면 됩니다. 이때 반드시 <code>@PrimaryKey</code>를 통해 테이블의 키를 명시해주어야 합니다.</p>
-<p>또한 Primary Key를 자동으로 증가하는 인덱스로 하고 싶은 경우가 있을 수 있습니다. 이런 경우엔 아래 코드와 같이 <code>autoGenerate = true</code>를 주시고 후에 값으로 <code>0 or null</code>을 주시면 자동으로 인덱스가 생성되어 저장됩니다.</p>
-<div class="highlight"><pre class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="nd">@PrimaryKey</span><span class="p">(</span><span class="n">autoGenerate</span> <span class="p">=</span> <span class="k">true</span><span class="p">)</span> <span class="k">val</span> <span class="py">uid</span><span class="p">:</span> <span class="n">Int</span>
-</code></pre></div><h3 id="2-dao">2) DAO</h3>
-<p><strong>UserDao.kt</strong></p>
-<div class="highlight"><pre class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="nd">@Dao</span>
-    <span class="k">interface</span> <span class="nc">UserDao</span> <span class="p">{</span>
-        <span class="nd">@Query</span><span class="p">(</span><span class="s2">&#34;SELECT * FROM user&#34;</span><span class="p">)</span>
-        <span class="k">fun</span> <span class="nf">getAll</span><span class="p">():</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">User</span><span class="p">&gt;</span>
-
-        <span class="nd">@Query</span><span class="p">(</span><span class="s2">&#34;SELECT * FROM user WHERE uid IN (:userIds)&#34;</span><span class="p">)</span>
-        <span class="k">fun</span> <span class="nf">loadAllByIds</span><span class="p">(</span><span class="n">userIds</span><span class="p">:</span> <span class="n">IntArray</span><span class="p">):</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">User</span><span class="p">&gt;</span>
-
-        <span class="nd">@Query</span><span class="p">(</span><span class="s2">&#34;SELECT * FROM user WHERE first_name LIKE :first AND &#34;</span> <span class="p">+</span>
-               <span class="s2">&#34;last_name LIKE :last LIMIT 1&#34;</span><span class="p">)</span>
-        <span class="k">fun</span> <span class="nf">findByName</span><span class="p">(</span><span class="n">first</span><span class="p">:</span> <span class="n">String</span><span class="p">,</span> <span class="n">last</span><span class="p">:</span> <span class="n">String</span><span class="p">):</span> <span class="n">User</span>
-
-        <span class="nd">@Insert</span>
-        <span class="k">fun</span> <span class="nf">insertAll</span><span class="p">(</span><span class="k">vararg</span> <span class="n">users</span><span class="p">:</span> <span class="n">User</span><span class="p">)</span>
-
-        <span class="nd">@Delete</span>
-        <span class="k">fun</span> <span class="nf">delete</span><span class="p">(</span><span class="n">user</span><span class="p">:</span> <span class="n">User</span><span class="p">)</span>
-    <span class="p">}</span>
-</code></pre></div><p>다음은 DAO로 내부에 DB에 사용할 쿼리를 메소드로 정의합니다. <code>interface</code>로 작성하며 <code>@Dao</code> 어노테이션으로 감싸 작성합니다. <code>@Insert</code>, <code>@Delete</code> 와 같은 기본적인 쿼리는 기본적으로 제공되며, 그 외의 복잡한 쿼리는 직접 <code>@Query</code> 어노테이션 내부에 작성하고 쿼리를 호출할 메소드를 지정해주어야 합니다. 위 코드는 다양한 DAO 쿼리/메소드 예제입니다. 원하는 값을 전달하여 필터링하는 쿼리를 던지고 싶은경우, 메소드에 파라미터를 지정하고 <code>@Query</code>내부에서 <code>:</code> prefix를 통해 파라미터를 참조할 수 있습니다.</p>
-<h3 id="3-database">3) Database</h3>
-<p><strong>UserDatabase.kt</strong></p>
-<div class="highlight"><pre class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="nd">@Database</span><span class="p">(</span><span class="n">entities</span> <span class="p">=</span> <span class="p">[</span><span class="n">User</span><span class="o">::</span><span class="k">class</span><span class="p">],</span> <span class="n">version</span> <span class="p">=</span> <span class="m">1</span><span class="p">,</span> <span class="n">exportSchema</span> <span class="p">=</span> <span class="k">false</span><span class="p">)</span>
-    <span class="k">abstract</span> <span class="k">class</span> <span class="nc">AppDatabase</span> <span class="p">:</span> <span class="n">RoomDatabase</span><span class="p">()</span> <span class="p">{</span>
-        <span class="k">abstract</span> <span class="k">fun</span> <span class="nf">userDao</span><span class="p">():</span> <span class="n">UserDao</span>
-
-        <span class="k">companion</span> <span class="k">object</span><span class="p">{</span>
-        <span class="k">private</span> <span class="k">var</span> <span class="py">instance</span> <span class="p">:</span> <span class="n">UserDatabase</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span>
-
-        <span class="nd">@Synchronized</span>
-        <span class="k">fun</span> <span class="nf">getInstance</span><span class="p">(</span><span class="n">context</span> <span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">:</span> <span class="n">UserDatabase</span><span class="p">?</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">instance</span> <span class="o">==</span> <span class="k">null</span><span class="p">){</span>
-                <span class="n">instance</span> <span class="p">=</span> <span class="n">Room</span><span class="p">.</span><span class="n">databaseBuilder</span><span class="p">(</span><span class="n">context</span><span class="p">.</span><span class="n">applicationContext</span><span class="p">,</span> <span class="n">UserDatabase</span><span class="o">::</span><span class="k">class</span><span class="p">.</span><span class="n">java</span><span class="p">,</span> <span class="s2">&#34;database_name&#34;</span><span class="p">)</span>
-                    <span class="p">.</span><span class="n">fallbackToDestructiveMigration</span><span class="p">()</span>
-                    <span class="p">.</span><span class="n">allowMainThreadQueries</span><span class="p">()</span>
-                    <span class="p">.</span><span class="n">build</span><span class="p">()</span>
-            <span class="p">}</span>
-
-            <span class="k">return</span> <span class="n">instance</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div><p>마지막으로 Database를 생성하고 접근하는 객체입니다. <code>RoomDatabase</code>를 상속하며 <code>@Database</code> 어노테이션으로 감싸 작성합니다. 어노테이션에는 Entity로 사용할 클래스와, DB 버전 등을 명시합니다. 그리고 내부에는 위에 작성한 UserDao를 선언하여 후에 DAO에 접근하여 작성한 메소드를 호출하는 방식을 사용합니다.</p>
-<p>또한 어플리케이션 전체에서 DB에 접근하는 객체는 둘 이상 필요하지 않으므로 내부에 <code>companion object</code>와 <code>Synchronized</code> 키워드를 이용하여 database를 <code>Singletone</code>으로 사용합니다.</p>
-<hr>
-<h2 id="3-작성한-room-database-사용">3. 작성한 Room Database 사용</h2>
-<p>위 과정을 모두 마쳤다면 이제 Room Database를 사용할 준비는 끝났습니다. 원하는 진입점에서 아래 코드를 이용하여 DB, DAO에 접근하면 됩니다.</p>
-<div class="highlight"><pre class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="k">val</span> <span class="py">database</span> <span class="p">=</span> <span class="n">UserDatabase</span><span class="p">.</span><span class="n">getInstance</span><span class="p">(</span><span class="n">application</span><span class="p">)</span><span class="o">!!</span>
-<span class="k">val</span> <span class="py">userDao</span> <span class="p">=</span> <span class="n">database</span><span class="p">.</span><span class="n">userDao</span><span class="p">()</span>
-
-<span class="k">val</span> <span class="py">data</span> <span class="p">=</span> <span class="n">userDao</span><span class="p">.</span><span class="n">getAll</span><span class="p">()</span>
-</code></pre></div><p>DB에 접근하는 행위를 <code>MainThread</code>에서 돌린다면 오랫동안 UI를 잠글 수 있으므로 권장하지 않습니다. 따라서 <code>Corourtine</code>이나 <code>RxJava</code>를 활용한 방식을 추천합니다. 또한 <code>LiveData</code>를 이용하여 DB가 갱신되면 앱 UI가 자동으로 업데이트 되도록 구성할 수 있습니다. 이는 추후 포스트로 작성하겠습니다.</p>
-<hr>
-<p><strong>Reference</strong></p>
-<ul>
-<li><a href="https://developer.android.com/training/data-storage/room?hl=ko">https://developer.android.com/training/data-storage/room?hl=ko</a></li>
-</ul>
+<h3 id="2-ripple-효과-주는법">2. Ripple 효과 주는법</h3>
+<p>border와 별개로 Clickable한 효과를 주려면 아래 코드를 추가한다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml">android:foreground=&#34;?android:selectableItemBackground&#34;
+</code></pre></div><h3 id="3-toolbar-내-레이아웃-치우침">3. Toolbar 내 레이아웃 치우침</h3>
+<p>Android Studio Toolbar 내부에 원하는 레이아웃을 배치하려 할때 치우침(특히 오른쪽으로) 현상이 생긴다</p>
+<p>이는 <code>Toolbar</code> 레이아웃이 기본적으로 <code>16dp</code>의 여백을 가지고 있기 때문이다. 이 여백은 툴바에서 사용되는 홈 버튼, 앱 아이콘 등을 위해 설정되어 있는 것으로 <strong>앱의 메인 AppBar</strong>로 사용되는 경우 건들지 않는 것이 좋다. 위 기능 사용 목적이 아닌 내부 레이아웃을 배치하기 위함이라면 아래 코드를 추가하여 치우침 현상을 해결할 수 있다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;android.support.v7.widget.Toolbar</span>
+    <span class="na">app:contentInsetStart=</span><span class="s">&#34;0dp&#34;</span>
+    <span class="na">app:contentInsetLeft=</span><span class="s">&#34;0dp&#34;</span>
+    <span class="err">...</span>
+<span class="nt">&gt;</span>
+</code></pre></div><hr>
+<h2 id="reference">Reference</h2>
+<p><a href="https://stackoverflow.com/questions/40819965/layout-inside-toolbar-is-shifted-to-the-right">https://stackoverflow.com/questions/40819965/layout-inside-toolbar-is-shifted-to-the-right</a></p>
 </section>
 
 
@@ -344,8 +260,6 @@ if (!doNotTrack) {
             <a href="/tags/android/">android</a>
         
             <a href="/tags/kotlin/">kotlin</a>
-        
-            <a href="/tags/room/">room</a>
         
     </section>
 
